@@ -27,7 +27,7 @@ const SITE = {
     { stack: ["Kotlin", "Jetpack Compose"], repo: "https://github.com/mauricioaires30/TruePlayer", demo: "" },
     { stack: ["SaaS", "Web"], repo: "", demo: "https://www.r1academy.app/landingpage" },
     { stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
-    { stack: ["Godot", "GDScript"], repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
+    { stack: ["Godot", "Pixel art"], repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
   ]
 };
 
@@ -65,7 +65,7 @@ const I18N = {
         { title: "TruePlayer", role: "Desenvolvimento completo (projeto solo, em evolução)", desc: "Aplicativo Android gratuito e open source para tocar música e editar tags. Baixa músicas a partir de links, completa tags e capas automaticamente e pode sincronizar a biblioteca com o GitHub." },
         { title: "R1 Academy", role: "Criação da plataforma", desc: "SaaS de preparação para residência médica. Gestores organizam mentores, e os mentores montam rotinas de estudo, aulas e questões para os alunos. A plataforma também tem agendamento de reuniões, feedback de provas e acompanhamento do desempenho, como o percentual de acertos." },
         { title: "Paralegram", role: "Programação e arte", desc: "Jogo sério em pixel art, feito em GameMaker, que ensina pensamento computacional paralelo por meio de programação em blocos. Foi avaliado com estudantes de Ciência da Computação." },
-        { title: "Tekohá", role: "Equipe de desenvolvimento · Laboratório SPIDER – UFPA", desc: "Jogo de ação e aventura 2D em pixel art, feito em Godot, inspirado no folclore amazônico e na cultura paraense. Ainda em desenvolvimento." }
+        { title: "Tekohá", role: "Pixel art, game design e level design · Laboratório SPIDER – UFPA", desc: "Jogo de ação e aventura 2D em pixel art, feito em Godot, com combate, exploração e habilidades inspiradas no folclore amazônico, como a Iara e o Curupira, e na cultura paraense. Disponível para Windows e Linux." }
       ]
     },
     contact: {
@@ -110,7 +110,7 @@ const I18N = {
         { title: "TruePlayer", role: "Full development (solo project, ongoing)", desc: "Free, open-source Android app for playing music and editing tags. Downloads songs from links, fills in tags and cover art automatically, and can sync the library with GitHub." },
         { title: "R1 Academy", role: "Platform creator", desc: "SaaS for medical residency exam preparation. Managers organize mentors, and mentors build study routines, lessons and question sets for students. The platform also offers meeting scheduling, exam feedback and performance tracking, such as accuracy rates." },
         { title: "Paralegram", role: "Programming & art", desc: "Pixel-art serious game built in GameMaker that teaches parallel computational thinking through block-based programming. It was evaluated with Computer Science students." },
-        { title: "Tekohá", role: "Development team · SPIDER Lab – UFPA", desc: "2D pixel-art action-adventure game built in Godot, inspired by Amazonian folklore and the culture of Pará, Brazil. Still in development." }
+        { title: "Tekohá", role: "Pixel art, game design and level design · SPIDER Lab – UFPA", desc: "2D pixel-art action-adventure game built in Godot, with combat, exploration and abilities inspired by Amazonian folklore, such as the Iara and the Curupira, and by the culture of Pará, Brazil. Available for Windows and Linux." }
       ]
     },
     contact: {
