@@ -210,6 +210,70 @@ const SPRITES = {
     ]
   },
 
+  item_html: {
+    pal: { H: "#e34f26", h: "#f06529", W: "#ffffff" },
+    rows: [
+      "HHHHHHhhhhhh",
+      "HHHHHHhhhhhh",
+      "HHHHWWWWhhhh",
+      "HHHHWHhhhhhh",
+      "HHHHWWWhhhhh",
+      "HHHHHHhWhhhh",
+      "HHHHHHhWhhhh",
+      "HHHHWWWhhhhh",
+      ".HHHHHhhhhh.",
+      "..HHHHhhhh..",
+      "...HHHhhh...",
+      ".....Hh....."
+    ]
+  },
+  item_css: {
+    pal: { C: "#1572b6", c: "#33a9dc", W: "#ffffff" },
+    rows: [
+      "CCCCCCcccccc",
+      "CCCCCCcccccc",
+      "CCCCWWWWcccc",
+      "CCCCCCcWcccc",
+      "CCCCCWWWcccc",
+      "CCCCCCcWcccc",
+      "CCCCCCcWcccc",
+      "CCCCWWWWcccc",
+      ".CCCCCccccc.",
+      "..CCCCcccc..",
+      "...CCCccc...",
+      ".....Cc....."
+    ]
+  },
+  /* nave dos Hearthians (Outer Wilds), desenhada em pixel art */
+  ship: {
+    pal: { k: "#2a1d14", M: "#9aa0aa", m: "#61666f", W: "#c07a3e", w: "#8a5226", R: "#c94a3a", G: "#8fe3ff", g: "#3a8fb0" },
+    rows: [
+      "........kkkkkkk.......",
+      "......kkMMMMMMMkk.....",
+      "....kkWWWWWWWWWMMk....",
+      "...kWWWWWWWWWWWMGGk...",
+      "..kWWRRRRRWWWWWMGGGk..",
+      "..kmWWWWWWWWWWWMgGGGk.",
+      "..kmWWWWWWWWWWWMMMMMMk",
+      "..kmwwwwwwwwwwwMMMMMk.",
+      "..kmwwwwwwwwwwwmmmmk..",
+      "...kwwwwwwwwwwwmmk....",
+      "....kkkkkkkkkkkkk.....",
+      ".....k.k.....k.k......",
+      "....kk.kk...kk.kk....."
+    ]
+  },
+  shipflame: {
+    pal: { O: "#f2761e", Y: "#ffd23d", W: "#fff3c4" },
+    rows: [
+      "..OO",
+      ".OYY",
+      "OYWY",
+      ".OYY",
+      "..OO"
+    ]
+  },
+
   /* ---------- Outer Wilds ---------- */
   /* Fogueira com marshmallow no espeto */
   campfire: {
@@ -282,7 +346,7 @@ function spriteSVG(name, scale, palOverride, outlineOverride) {
 const GAME_ART = {
   soul:         { src: "assets/games/ut-soul.png",           w: 16, h: 16, pixel: true },
   sun:          { src: "assets/games/pvz-sun.png",           w: 10, h: 10 },
-  sunflower:    { src: "assets/games/pvz-sunflower.png",     w: 18, h: 20 },
+  sunflower:    { src: "assets/games/pvz-sunflower.png",     w: 18, h: 20.3 },
   mc_creeper:   { src: "assets/games/mc-creeper-head.png",   w: 16, h: 16, pixel: true },
   mc_skeleton:  { src: "assets/games/mc-skeleton-skull.png", w: 16, h: 16, pixel: true },
   mc_zombie:    { src: "assets/games/mc-zombie-head.png",    w: 16, h: 16, pixel: true },
@@ -292,10 +356,19 @@ const GAME_ART = {
   mc_poppy:     { src: "assets/games/mc-poppy.png",          w: 16, h: 16, pixel: true },
   mc_dandelion: { src: "assets/games/mc-dandelion.png",      w: 16, h: 16, pixel: true },
   mc_campfire:  { src: "assets/games/mc-campfire.png",       w: 16, h: 16, pixel: true },
-  ow_timber:    { src: "assets/games/ow-timber-hearth.png",  w: 16, h: 16 },
-  ow_giants:    { src: "assets/games/ow-giants-deep.png",    w: 16, h: 16 },
-  ow_brittle:   { src: "assets/games/ow-brittle-hollow.png", w: 16, h: 16 },
-  ow_ash:       { src: "assets/games/ow-ash-twin.png",       w: 16, h: 16 }
+  /* planetas: arte ilustrada do mapa do sistema solar de Outer Wilds */
+  ow_timber:     { src: "assets/games/ow-timber-hearth.png",   w: 16, h: 16.7 },
+  ow_attlerock:  { src: "assets/games/ow-attlerock.png",       w: 6,  h: 6 },
+  ow_giants:     { src: "assets/games/ow-giants-deep.png",     w: 16, h: 16 },
+  ow_brittle:    { src: "assets/games/ow-brittle-hollow.png",  w: 16, h: 19.1 },
+  ow_lantern:    { src: "assets/games/ow-hollows-lantern.png", w: 7,  h: 7.9 },
+  ow_bramble:    { src: "assets/games/ow-dark-bramble.png",    w: 16, h: 17.3 },
+  ow_twins:      { src: "assets/games/ow-hourglass-twins.png", w: 8,  h: 15.75 },
+  ow_quantum:    { src: "assets/games/ow-quantum-moon.png",    w: 6,  h: 6 },
+  ow_interloper: { src: "assets/games/ow-interloper.png",      w: 22, h: 10.2 },
+  ow_ventures:   { src: "assets/games/ow-ventures.png",        w: 16, h: 12.5 },
+  ow_eye:        { src: "assets/games/ow-eye-of-the-universe.webp", w: 16, h: 16 },
+  ow_eye_symbol: { src: "assets/games/ow-eye-symbol.png",    w: 16, h: 13.1 }
 };
 
 /* HTML de um sprite: usa a arte do jogo se existir, senão o pixel art em código. */

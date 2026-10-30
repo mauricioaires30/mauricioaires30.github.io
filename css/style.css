@@ -16,7 +16,8 @@
   --sky-bottom: #f4efdd;
   --glow: transparent;
   --shadow: rgba(43, 36, 24, .25);
-  --nomai-opacity: .28;
+  --nomai: #2f7f8c;
+  --nomai-opacity: .45;
 
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --display: "Pixelify Sans", "Inter", system-ui, sans-serif;
@@ -43,7 +44,8 @@
   --sky-bottom: #0a0c1c;
   --glow: rgba(255, 140, 66, .2);
   --shadow: rgba(0, 0, 0, .55);
-  --nomai-opacity: .42;
+  --nomai: #7fdcff;
+  --nomai-opacity: .55;
   color-scheme: dark;
 }
 
@@ -184,24 +186,40 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
 /* Foto + enfeites */
 .avatar { position: relative; justify-self: center; padding: 2rem 2.5rem 1rem; }
+.avatar__eye {
+  position: absolute; left: 50%; top: 50%; z-index: 0; pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.avatar__eye img { width: 100%; max-width: none; height: auto; animation: spin 140s linear infinite; }
+.avatar__eye--dark { width: min(600px, 130vw); filter: brightness(1.6) saturate(1.2); }
+.avatar__eye--light { width: min(420px, 100vw); filter: brightness(0); opacity: .18; }
+.avatar__eye--light img { animation-duration: 200s; }
+.avatar__eye--light { display: none; }
+:root:not([data-theme="dark"]) .avatar__eye--dark { display: none; }
+:root:not([data-theme="dark"]) .avatar__eye--light { display: block; }
 .avatar__frame {
   --px: 6px;
   position: relative; width: min(280px, 68vw); aspect-ratio: 1; margin: 6px;
   background: var(--surface);
   box-shadow: 0 -6px 0 0 var(--b), 0 6px 0 0 var(--b), -6px 0 0 0 var(--b), 6px 0 0 0 var(--b), 6px 12px 0 0 var(--shadow);
 }
+.avatar__frame { z-index: 1; }
 .avatar__frame img { width: 100%; height: 100%; object-fit: cover; }
 .avatar__fallback { display: grid; place-items: center; width: 100%; height: 100%; }
 .deco { position: absolute; z-index: 3; animation: bob 2.4s steps(4) infinite; }
 .deco--planet { top: -.4rem; right: -.2rem; animation-duration: 3.2s; }
 .deco--flower { bottom: -.8rem; left: 0; animation: none; }
 .deco--creeper { bottom: -.6rem; right: .6rem; animation: none; }
+.deco--moon { top: 4.6rem; right: -1.4rem; animation-duration: 2.8s; }
 
 /* Céu */
 .sky { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .sky__cloud { position: absolute; opacity: .95; animation: drift linear infinite; }
 .sky__star { position: absolute; opacity: 0; animation: twinkle 3s steps(3) infinite; }
 :root[data-theme="dark"] .sky__star { opacity: 1; }
+.ship { position: absolute; top: 3%; left: 0; animation: fly 30s linear infinite; animation-delay: -6s; }
+.ship__bob { display: flex; align-items: center; animation: bob 1.6s steps(4) infinite; }
+.ship__flame { margin-right: -3px; animation: flicker .25s steps(2) infinite; }
 .sky__planet { position: absolute; animation: bob 4s steps(4) infinite; }
 :root:not([data-theme="dark"]) .sky__planet { display: none; }
 :root[data-theme="dark"] .sky__cloud { display: none; }
@@ -227,6 +245,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   margin: 4px; padding: 1.1rem 1.2rem; background: #000; color: #fff; font-family: var(--dialog); font-size: 1.5rem; line-height: 1.2;
   box-shadow: 0 -4px 0 0 #fff, 0 4px 0 0 #fff, -4px 0 0 0 #fff, 4px 0 0 0 #fff, 8px 10px 0 0 var(--shadow);
 }
+.stats-wrap { position: relative; }
+.stats__badge { position: absolute; top: -34px; right: -18px; transform: rotate(8deg); filter: drop-shadow(3px 4px 0 var(--shadow)); }
 .stats__row { display: grid; grid-template-columns: 6.2rem 1fr; gap: .6rem; padding: .15rem 0; }
 .stats dt { color: #ffd84d; }
 
@@ -238,45 +258,46 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   box-shadow: 0 -3px 0 0 var(--b), 0 3px 0 0 var(--b), -3px 0 0 0 var(--b), 3px 0 0 0 var(--b);
 }
 
-/* Inventário do Minecraft (linguagens) */
-.inv {
-  --slot-bg: #8b8b8b;
-  width: min(100%, 560px); padding: 10px 12px 14px; margin: 4px;
-  background: #c6c6c6; border: 4px solid; border-color: #fff #555 #555 #fff;
-  box-shadow: 0 0 0 4px #000, 10px 14px 0 4px var(--shadow);
+/* Hotbar do Minecraft (linguagens) */
+.hotbar-wrap { --hb: 3px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.hotbar__name {
+  min-height: 1.6rem; margin-left: calc(91 * var(--hb)); transform: translateX(-50%);
+  font-family: var(--dialog); font-size: 1.6rem; line-height: 1; color: #fff; text-shadow: 2px 2px 0 #3f3f3f;
+  opacity: 0; transition: opacity .25s;
 }
-.inv__title { font-family: var(--dialog); font-size: 1.5rem; line-height: 1; color: #3f3f3f; margin: 0 0 8px 2px; }
-.inv__grid { display: grid; grid-template-columns: repeat(9, 1fr); }
-.inv__hotbar { margin-top: 12px; }
-.slot {
-  position: relative; aspect-ratio: 1; display: grid; place-items: center;
-  background: var(--slot-bg); border: 3px solid; border-color: #373737 #fff #fff #373737;
-  cursor: pointer; outline: none;
+.hotbar__name.is-visible { opacity: 1; transition: none; }
+:root:not([data-theme="dark"]) .hotbar__name { color: var(--text); text-shadow: 2px 2px 0 rgba(0, 0, 0, .12); }
+.hotbar {
+  position: relative; width: calc(182 * var(--hb)); height: calc(22 * var(--hb));
+  image-rendering: pixelated;
 }
-.slot--empty { cursor: default; }
-.slot:hover::after, .slot:focus-visible::after {
-  content: ""; position: absolute; inset: 0; background: rgba(255, 255, 255, .45); pointer-events: none;
+/* a barra fica meio transparente, como no jogo; os itens não */
+.hotbar::before {
+  content: ""; position: absolute; inset: 0; opacity: .72;
+  background: url("../assets/games/mc-hotbar.png") 0 0 / 100% 100%;
+  image-rendering: pixelated;
 }
-.slot__item { display: grid; place-items: center; width: 100%; height: 100%; }
-.slot__item .sprite { width: 66%; }
-.slot__item svg { width: 100%; height: auto; }
-/* slot selecionado (moldura branca da hotbar) */
-.slot.is-selected { z-index: 2; box-shadow: 0 0 0 3px #fff, 0 0 0 6px #000; }
-.slot.is-selected .slot__item { transform: scale(1.12); }
-/* tooltip roxo do Minecraft */
-.slot__tip {
-  position: absolute; bottom: calc(100% + 10px); left: -4px; z-index: 5;
-  padding: 2px 8px 4px; white-space: nowrap; pointer-events: none;
-  font-family: var(--dialog); font-size: 1.4rem; line-height: 1.1; color: #fff; text-shadow: 2px 2px 0 #3f3f3f;
-  background: #100010; border: 3px solid #2d0a6b; box-shadow: 0 0 0 2px #100010;
-  visibility: hidden;
+.hotbar__slot {
+  position: absolute; top: var(--hb); left: calc((1 + var(--i) * 20) * var(--hb));
+  width: calc(20 * var(--hb)); height: calc(20 * var(--hb));
+  display: grid; place-items: center;
 }
-.slot--tip-right .slot__tip { left: auto; right: -4px; }
-.slot:hover .slot__tip, .slot:focus-visible .slot__tip { visibility: visible; }
+.hotbar__btn { display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.hotbar__btn:focus-visible { outline: none; }
+.hotbar__btn .sprite { width: calc(15 * var(--hb)); }
+.hotbar__btn svg { width: 100%; height: auto; }
+/* moldura branca de seleção (textura do jogo) */
+.hotbar__sel {
+  position: absolute; z-index: 2; pointer-events: none;
+  top: calc(-1 * var(--hb)); left: calc((-1 + var(--sel, 0) * 20) * var(--hb));
+  width: calc(24 * var(--hb)); height: calc(23 * var(--hb));
+  background: url("../assets/games/mc-hotbar-selection.png") 0 0 / 100% 100%;
+  image-rendering: pixelated;
+}
 
 /* Projetos (cartas de fase) */
 .projects { display: grid; gap: 2rem 1.8rem; }
-@media (min-width: 760px) { .projects { grid-template-columns: repeat(2, 1fr); } .project:nth-child(even) { transform: translateY(12px); } }
+@media (min-width: 760px) { .projects { grid-template-columns: repeat(2, 1fr); } }
 
 .card {
   margin: 4px; padding: 1.4rem; background: var(--surface);
@@ -284,7 +305,6 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 }
 .project { display: flex; flex-direction: column; gap: .85rem; transition: transform .15s steps(3); }
 .project:hover { transform: translateY(-6px); }
-@media (min-width: 760px) { .project:nth-child(even):hover { transform: translateY(6px); } }
 .project__head { display: flex; align-items: center; gap: 1rem; }
 .project__icon { display: grid; place-items: center; width: 64px; height: 64px; background: var(--bg-alt);
   box-shadow: 0 -3px 0 0 var(--b), 0 3px 0 0 var(--b), -3px 0 0 0 var(--b), 3px 0 0 0 var(--b); margin: 3px; }
@@ -314,24 +334,21 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   width: 210px; padding: 12px; margin: 4px; background: #1d2b30; color: #7fdcff;
   box-shadow: 0 -4px 0 0 #0f171a, 0 4px 0 0 #0f171a, -4px 0 0 0 #0f171a, 4px 0 0 0 #0f171a, 6px 10px 0 0 var(--shadow);
 }
-.slab .nomai-img--dark { filter: drop-shadow(0 0 3px rgba(127, 220, 255, .8)); }
-.slab .nomai-img--light { display: none; }
+.slab svg { display: block; width: 100%; height: auto; color: #7fdcff; filter: drop-shadow(0 0 4px rgba(127, 220, 255, .8)); }
 
 /* Escrita nomai (conversas em espiral atrás do conteúdo) */
 .section { position: relative; overflow: hidden; }
 .section > .container { position: relative; z-index: 1; }
-.nomai-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: var(--nomai-opacity); }
+.nomai-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; color: var(--nomai); opacity: var(--nomai-opacity); }
 .hero .nomai-bg { z-index: 1; }
 .nomai-bg__item { position: absolute; display: block; }
-.nomai-img { display: block; }
-.nomai-img img { display: block; width: 100%; height: auto; }
-.nomai-img--light { display: none; }
-:root:not([data-theme="dark"]) .nomai-bg .nomai-img--dark { display: none; }
-:root:not([data-theme="dark"]) .nomai-bg .nomai-img--light { display: block; }
-:root[data-theme="dark"] .nomai-bg .nomai-img--dark { filter: drop-shadow(0 0 5px rgba(127, 220, 255, .6)); }
-/* a escrita "acende" da esquerda para a direita, como ao traduzir */
-.nomai-img { clip-path: inset(0 100% 0 0); transition: clip-path 3s ease-out; }
-.is-read .nomai-img { clip-path: inset(0 0 0 0); }
+.nomai-svg { display: block; width: 100%; height: auto; overflow: visible; }
+:root[data-theme="dark"] .nomai-bg .nomai-svg { filter: drop-shadow(0 0 5px rgba(127, 220, 255, .7)); }
+/* a escrita fica sempre visível bem fraca; ao traduzir, o brilho percorre cada espiral */
+.nomai-base { opacity: .35; }
+.nomai-glow path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.is-read .nomai-glow path { animation-name: nomai-read; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes nomai-read { to { stroke-dashoffset: 0; } }
 
 
 .pix {
@@ -388,6 +405,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @keyframes flicker { 50% { filter: drop-shadow(0 0 18px rgba(255, 150, 60, .75)) brightness(1.12); } }
 @keyframes glow { 50% { opacity: .55; } }
 @keyframes shake { 50% { transform: translateX(calc(-50% + 3px)); } }
+@keyframes fly { from { transform: translateX(-12vw); } 55%, to { transform: translateX(112vw); } }
+@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pop { to { transform: translate(-50%, -48px); opacity: 0; } }
 
 /* ============ Responsivo ============ */
@@ -399,15 +418,15 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   .logo__text { display: none; }
   .avatar { padding-inline: 1rem; }
   .footer__deco:nth-child(even) { display: none; }
+  .hotbar-wrap { --hb: 1.9px; }
   .sky__planet { display: none; }
-  .inv { padding: 8px 8px 10px; }
-  .slot { border-width: 2px; }
-  .slot__tip { font-size: 1.2rem; }
+  .ship { top: 4%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ship { display: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .sky__cloud { left: auto; }
-  .nomai-img { clip-path: none; }
+  .nomai-glow path { stroke-dashoffset: 0; }
 }

@@ -20,17 +20,18 @@ const SITE = {
     { key: "github",    label: "GitHub",    value: "github.com/mauricioaires30", href: "https://github.com/mauricioaires30" }
   ],
 
-  // Linguagens: cada uma vira um item na hotbar do inventário (sprite = nome em js/sprites.js).
-  // Os slots que sobrarem ficam vazios.
+  // Linguagens: cada uma vira um item na hotbar do Minecraft (sprite = nome em js/sprites.js).
+  // A hotbar tem 9 slots; os que sobrarem ficam vazios.
   tech: [
     { name: "Python",     sprite: "item_python" },
     { name: "Java",       sprite: "item_java" },
     { name: "GML",        sprite: "item_gml" },
     { name: "GDScript",   sprite: "item_godot" },
     { name: "JavaScript", sprite: "item_js" },
-    { name: "TypeScript", sprite: "item_ts" }
+    { name: "TypeScript", sprite: "item_ts" },
+    { name: "HTML",       sprite: "item_html" },
+    { name: "CSS",        sprite: "item_css" }
   ],
-  inventoryRows: 3,       // linhas do inventário acima da hotbar
 
   // Projetos: dados fixos (textos ficam em I18N.<lang>.projects.items, na MESMA ordem)
   projects: [
@@ -80,8 +81,7 @@ const I18N = {
       ]
     },
     tech: {
-      title: "Linguagens",
-      panel: "Inventário"
+      title: "Linguagens"
     },
     projects: {
       title: "Projetos",
@@ -146,8 +146,7 @@ const I18N = {
       ]
     },
     tech: {
-      title: "Languages",
-      panel: "Inventory"
+      title: "Languages"
     },
     projects: {
       title: "Projects",
