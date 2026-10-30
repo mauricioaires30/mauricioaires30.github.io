@@ -103,7 +103,10 @@ const I18N = {
       pixText: "Se algum projeto meu te ajudou, você pode contribuir via Pix. Qualquer valor é bem-vindo!",
       pixAlt: "QR Code Pix para apoiar o trabalho"
     },
-    footer: { text: "Feito com HTML, CSS e JS." }
+    footer: {
+      text: "Feito com HTML, CSS e JS.",
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale © Toby Fox. Artes usadas como homenagem, num site pessoal sem fins comerciais."
+    }
   },
 
   en: {
@@ -166,6 +169,9 @@ const I18N = {
       pixText: "If any of my projects helped you, you can contribute via Pix (Brazilian instant payment). Any amount is appreciated!",
       pixAlt: "Pix QR Code to support the work"
     },
-    footer: { text: "Built with HTML, CSS and JS." }
+    footer: {
+      text: "Built with HTML, CSS and JS.",
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale © Toby Fox. Art used as a tribute on a personal, non-commercial site."
+    }
   }
 };

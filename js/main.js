@@ -29,51 +29,62 @@
 
   function sprite(name, scale, pal) {
     var holder = el('span', { class: 'sprite' });
-    holder.innerHTML = spriteSVG(name, scale, pal);
+    holder.innerHTML = pal ? spriteSVG(name, scale, pal) : spriteHTML(name, scale);
     return holder;
-  }
-
-  /* Gerador pseudoaleatório com semente: os enfeites ficam iguais em toda visita */
-  function seeded(seed) {
-    var x = seed * 9301 + 49297;
-    return function () { x = (x * 9301 + 49297) % 233280; return x / 233280; };
   }
 
   /* ---------- Sprites declarados no HTML (<span data-sprite="...">) ---------- */
   document.querySelectorAll('[data-sprite]').forEach(function (node) {
     node.classList.add('sprite');
-    node.innerHTML = spriteSVG(node.getAttribute('data-sprite'), Number(node.getAttribute('data-scale')) || 4);
+    node.innerHTML = spriteHTML(node.getAttribute('data-sprite'), Number(node.getAttribute('data-scale')) || 4);
   });
 
-  /* ---------- Escrita nomai (Outer Wilds): <span data-nomai="quantidade:semente"> ---------- */
-  var GLYPHS = ['nomai1', 'nomai2', 'nomai3', 'nomai4', 'nomai5'];
+  /* ---------- Escrita nomai (Outer Wilds): conversas em espiral atrás do conteúdo ---------- */
+  // [seção, left %, top %, largura px, rotação, espelhar]
+  var NOMAI = [
+    ['top', 44, 4, 420, -12, false], ['top', -10, 58, 300, 160, true],
+    ['about', 70, -4, 380, 22, true], ['about', -12, 52, 300, -150, false],
+    ['tech', 62, 14, 460, 190, false], ['tech', 2, 74, 240, 40, true],
+    ['projects', -9, 2, 360, 75, false], ['projects', 78, 36, 340, -35, true], ['projects', 32, 80, 300, 170, false],
+    ['contact', 46, -10, 340, 100, true], ['contact', 84, 64, 260, -70, false]
+  ];
 
-  function fillNomai(node, count, seed) {
-    var rand = seeded(seed);
-    for (var i = 0; i < count; i++) {
-      node.appendChild(sprite(GLYPHS[Math.floor(rand() * GLYPHS.length)], 2));
-    }
+  // Duas cores da mesma escrita: o CSS mostra a do tema atual
+  function nomaiImg() {
+    return el('span', { class: 'nomai-img' }, [
+      el('img', { class: 'nomai-img--dark', src: 'assets/games/ow-nomai-dark.png', alt: '', loading: 'lazy', width: '517', height: '292' }),
+      el('img', { class: 'nomai-img--light', src: 'assets/games/ow-nomai-light.png', alt: '', loading: 'lazy', width: '517', height: '292' })
+    ]);
   }
 
-  document.querySelectorAll('[data-nomai]').forEach(function (node) {
-    var parts = node.getAttribute('data-nomai').split(':');
-    node.setAttribute('aria-hidden', 'true');
-    fillNomai(node, Number(parts[0]), Number(parts[1]));
+  var nomaiLayers = {};
+  NOMAI.forEach(function (n) {
+    var section = document.getElementById(n[0]);
+    var layer = nomaiLayers[n[0]];
+    if (!layer) {
+      layer = nomaiLayers[n[0]] = el('div', { class: 'nomai-bg', 'aria-hidden': 'true' });
+      section.insertBefore(layer, section.firstChild);
+    }
+    var item = el('span', { class: 'nomai-bg__item' }, [nomaiImg()]);
+    item.style.cssText = 'left:' + n[1] + '%;top:' + n[2] + '%;width:min(' + n[3] + 'px,70vw);transform:rotate(' + n[4] + 'deg)' + (n[5] ? ' scaleX(-1)' : '');
+    layer.appendChild(item);
   });
 
-  /* Placa nomai ao lado da fogueira */
-  (function buildSlab() {
-    var slab = document.getElementById('slab');
-    [6, 4, 5].forEach(function (count, i) {
-      var line = el('span', { class: 'nomai slab__line' });
-      fillNomai(line, count, 20 + i);
-      slab.appendChild(line);
-    });
-  })();
+  // Placa nomai ao lado da fogueira
+  document.getElementById('slab').appendChild(nomaiImg());
 
-  /* Texturas de chão (grama e terra) usadas no rodapé via CSS */
-  root.style.setProperty('--tile-grass', spriteURL('grass', 8));
-  root.style.setProperty('--tile-dirt', spriteURL('dirt', 8));
+  // A escrita "acende" quando aparece na tela, como na tradução do jogo
+  var nomaiNodes = document.querySelectorAll('.nomai-bg__item, .slab');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-read'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    nomaiNodes.forEach(function (n) { io.observe(n); });
+  } else {
+    nomaiNodes.forEach(function (n) { n.classList.add('is-read'); });
+  }
 
   /* ---------- Céu: nuvens (dia), estrelas e planetas (noite) ---------- */
   (function buildSky() {
@@ -94,9 +105,9 @@
       sky.appendChild(n);
     });
     // [sprite, left %, top %, escala]
-    var planets = [['giants', 57, 7, 4], ['brittle', 93, 30, 4], ['ember', 47, 84, 4], ['ember', 51, 88, 3]];
+    var planets = [['ow_giants', 57, 6, 4], ['ow_brittle', 93, 28, 3], ['ow_ash', 47, 82, 3]];
     planets.forEach(function (p, i) {
-      var n = sprite(p[0], p[3], i === 3 ? { B: '#8a7a6a', L: '#a89a88', D: '#5e5246', l: '#7a6c5e', H: '#c8bcaa' } : null);
+      var n = sprite(p[0], p[3]);
       n.classList.add('sky__planet');
       n.style.cssText = 'left:' + p[1] + '%;top:' + p[2] + '%;animation-delay:-' + i * 0.8 + 's';
       sky.appendChild(n);
@@ -108,9 +119,9 @@
     var wrap = document.getElementById('footer-decos');
     // [sprite, left %, escala, classe extra]
     var items = [
-      ['poppy', 3, 5], ['creeper', 11, 6, 'mob'], ['torch', 21, 5, 'torch'], ['skeleton', 30, 6, 'mob'],
-      ['dandelion', 40, 5], ['sunflower', 49, 3], ['zombie', 60, 6, 'mob'], ['torch', 70, 5, 'torch'],
-      ['pig', 79, 6, 'mob'], ['poppy', 89, 4], ['dandelion', 95, 4]
+      ['mc_poppy', 3, 3], ['mc_creeper', 11, 4, 'mob'], ['mc_torch', 20, 4, 'torch'], ['mc_skeleton', 29, 4, 'mob'],
+      ['mc_dandelion', 38, 3], ['sunflower', 48, 4], ['mc_zombie', 58, 4, 'mob'], ['mc_campfire', 67, 4, 'torch'],
+      ['mc_wither', 76, 4, 'mob'], ['mc_piglin', 85, 4, 'mob'], ['mc_torch', 94, 4, 'torch']
     ];
     items.forEach(function (it) {
       var n = sprite(it[0], it[2]);
@@ -238,7 +249,7 @@
     var list = document.getElementById('contact-links');
     list.replaceChildren();
     SITE.contacts.forEach(function (c) {
-      var heart = sprite('heart', 3);
+      var heart = sprite('soul', 1.5);
       heart.classList.add('menu__soul');
       var a = el('a', { href: c.href, target: c.href.indexOf('mailto:') === 0 ? '_self' : '_blank', rel: 'noopener noreferrer' }, [
         heart,
@@ -331,7 +342,7 @@
   var avatar = document.getElementById('avatar-img');
   avatar.addEventListener('error', function () {
     // Sem foto (offline, por exemplo): mostra um coração no lugar
-    var holder = sprite('heart', 16);
+    var holder = sprite('soul', 10);
     holder.classList.add('avatar__fallback');
     avatar.replaceWith(holder);
   });
@@ -366,7 +377,7 @@
   function dropSun() {
     if (document.hidden) return scheduleSun();
     var drop = el('button', { type: 'button', class: 'sun-drop', 'aria-label': I18N[currentLang].ui.sunDrop });
-    drop.appendChild(sprite('sun', 6));
+    drop.appendChild(sprite('sun', 10));
     drop.style.left = (6 + Math.random() * 84) + '%';
     drop.addEventListener('click', function () {
       var r = drop.getBoundingClientRect();
