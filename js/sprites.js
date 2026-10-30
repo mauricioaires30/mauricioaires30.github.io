@@ -173,7 +173,7 @@ function spriteSVG(name, scale, palOverride, outlineOverride) {
 /* ---------- Arte dos jogos (arquivos em assets/games) ----------
  * w/h = tamanho natural do arquivo em pixels. A escala multiplica esse tamanho
  * (escala 1 = tamanho natural). pixel: true mantem os pixels nitidos ao ampliar. */
-function art(file, w, h, pixel) { return { src: "assets/games/" + file, w: w, h: h, pixel: !!pixel }; }
+function art(file, w, h, pixel, card) { return { src: "assets/games/" + file, w: w, h: h, pixel: !!pixel, card: !!card }; }
 
 const GAME_ART = {
   /* Deltarune (sprites oficiais, pixel art) e a SOUL, igual nos dois jogos do Toby Fox */
@@ -215,19 +215,18 @@ const GAME_ART = {
   mc_parrot:        art("mc-parrot.png", 233, 331),
 
   /* Outer Wilds: planetas (recortes do mapa planetario oficial), naves e cometa */
-  ow_timber:     art("ow-timber-hearth.png", 130, 130),
-  ow_attlerock:  art("ow-attlerock.png", 50, 51),
-  ow_giants:     art("ow-giants-deep.png", 200, 200),
-  ow_brittle:    art("ow-brittle-hollow.png", 130, 159),
-  ow_lantern:    art("ow-hollows-lantern.png", 64, 74),
-  ow_bramble:    art("ow-dark-bramble.png", 200, 218),
-  ow_twins:      art("ow-hourglass-twins.png", 70, 132),
-  ow_quantum:    art("ow-quantum-moon.png", 52, 52),
+  ow_timber    : art("map-timber-hearth.png", 162, 164),
+  ow_attlerock : art("map-attlerock.png", 72, 69),
+  ow_giants    : art("ow-giants-deep.png", 200, 200),
+  ow_brittle   : art("ow-brittle-hollow.png", 130, 159),
+  ow_lantern   : art("ow-hollows-lantern.png", 64, 74),
+  ow_bramble   : art("ow-dark-bramble.png", 200, 218),
+  ow_twins     : art("map-twins.png", 135, 290),
+  ow_quantum   : art("ow-quantum-moon.png", 52, 52),
   ow_interloper: art("ow-interloper.webp", 460, 397),
-  ow_stranger:   art("ow-stranger-log.webp", 380, 380),
-  ow_sun:        art("ow-sun.webp", 411, 420),
-  ow_station:    art("ow-sun-station.webp", 300, 300),
-  ow_cannon:     art("ow-probe-cannon.webp", 225, 260),
+  ow_sun       : art("map-sun.png", 343, 342),
+  ow_station   : art("map-sun-station.png", 90, 63),
+  ow_cannon    : art("map-probe-cannon.png", 200, 154),
   ow_eye_symbol: art("ow-eye-symbol.png", 400, 328),
   ow_ship:       art("ow-ship.png", 27, 26, true),
   ow_ventures:   art("ow-ventures.png", 160, 125),
@@ -239,5 +238,5 @@ function spriteHTML(name, scale) {
   var a = GAME_ART[name];
   if (!a) return spriteSVG(name, scale);
   return '<img src="' + a.src + '" width="' + Math.round(a.w * scale) + '" height="' + Math.round(a.h * scale) +
-    '" alt="" class="art' + (a.pixel ? ' art--pixel' : '') + '" loading="lazy" decoding="async">';
+    '" alt="" class="art' + (a.pixel ? ' art--pixel' : '')  + '" loading="lazy" decoding="async">';
 }

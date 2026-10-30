@@ -28,9 +28,8 @@ var Lawn = (function () {
 
   var SHOOT_EVERY = 1.0;          // segundos entre tiros
   var PEA_SPEED = 430;            // px/s
-  var SHEET_FRAMES = 60;          // quadros da folha da ervilheira (cada um com 104 x 99 px)
-  var FRAME_W = 104, FRAME_H = 99;
-  var PEA_AT = 0.13;              // fração do ciclo em que a ervilha sai do cano
+  var FRAME_W = 70, FRAME_H = 71;   // ervilheira original do PvZ 1 (assets/games/pvz-peashooter.webp)
+  var PEA_AT = 0.12;                // fração do tempo entre tiros em que a ervilha sai do cano
 
   function init() {
     var lawn = document.getElementById('lawn');
@@ -50,24 +49,17 @@ var Lawn = (function () {
 
     function setup() {
       measure();
-      shooter = document.createElement('div');
-      shooter.className = 'pvz-shooter is-idle';
-      shooter.style.width = Math.round(FRAME_W * k) + 'px';
-      shooter.style.height = Math.round(FRAME_H * k) + 'px';
-      shooter.style.setProperty('--fw', Math.round(FRAME_W * k) + 'px');
-      shooter.style.setProperty('--fh', Math.round(FRAME_H * k) + 'px');
-      shooter.style.setProperty('--frames', SHEET_FRAMES);
-      shooter.style.setProperty('--cycle', (SHOOT_EVERY * 0.95) + 's');
+      shooter = document.createElement('img');
+      shooter.className = 'pvz-shooter';
+      shooter.alt = '';
+      shooter.src = DIR + 'pvz-peashooter.webp';
+      shooter.style.width = Math.round(FRAME_W * k * 1.35) + 'px';
       lawn.appendChild(shooter);
     }
 
-    /* Reinicia a animação de tiro da ervilheira (a ervilha sai um pouco depois, quando o cano dispara) */
+    /* A ervilheira do PvZ 1 só tem um ciclo (balança o tempo todo, inclusive ao atirar): o código só solta a ervilha */
     function playShot() {
-      shooter.classList.remove('is-shooting', 'is-idle');
-      void shooter.offsetWidth;                         // força o reinício da animação
-      shooter.classList.add('is-shooting');
-      setTimeout(function () { if (running) launchPea(); }, SHOOT_EVERY * 0.95 * 1000 * PEA_AT);
-      setTimeout(function () { shooter.classList.remove('is-shooting'); shooter.classList.add('is-idle'); }, SHOOT_EVERY * 0.95 * 1000);
+      setTimeout(function () { if (running) launchPea(); }, SHOOT_EVERY * 1000 * PEA_AT);
     }
 
     function spawn(name) {
@@ -115,8 +107,8 @@ var Lawn = (function () {
       p.className = 'pvz-pea'; p.alt = ''; p.src = DIR + 'pvz-pea.png';
       var size = Math.round(24 * k);
       p.style.width = size + 'px';
-      var x = 8 + FRAME_W * k * 0.8;
-      p.style.bottom = Math.round(FRAME_H * k * 0.6) + 'px';
+      var x = 8 + FRAME_W * k * 1.35 * 0.8;
+      p.style.bottom = Math.round(FRAME_H * k * 1.35 * 0.6) + 'px';
       p.style.transform = 'translate3d(' + x + 'px,0,0)';
       lawn.appendChild(p);
       peas.push({ el: p, x: x });
@@ -138,7 +130,7 @@ var Lawn = (function () {
       }
 
       // zumbis andando (+ linha de segurança: nenhum chega perto da ervilheira)
-      var safeX = 8 + FRAME_W * k + 40;
+      var safeX = 8 + FRAME_W * k * 1.35 + 40;
       alive.forEach(function (z) {
         z.x -= z.t.speed * speedK * dt;
         z.box.style.transform = 'translate3d(' + z.x + 'px,0,0)';

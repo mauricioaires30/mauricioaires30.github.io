@@ -32,9 +32,9 @@ var Decor = (function () {
    *   dur = segundos por volta, tilt = inclinação da órbita (graus) e flat = achatamento (0 a 1). */
   var ORBITS = [
     { s: 'top',  a: 'ow_giants', x: 55,  y: 5,  h: 96,  r: 0,
-      sat: { a: 'ow_cannon',  h: 48, radius: 92,  dur: 16, tilt: -18, flat: 0.42 } },
+      sat: { a: 'ow_cannon',  h: 40, radius: 92,  dur: 16, tilt: -18, flat: 0.42 } },
     { s: 'tech', a: 'ow_sun',    x: 8,   y: 44, h: 150, r: 0,
-      sat: { a: 'ow_station', h: 52, radius: 118, dur: 26, tilt: 14,  flat: 0.38 } }
+      sat: { a: 'ow_station', h: 30, radius: 118, dur: 26, tilt: 14,  flat: 0.38 } }
   ];
 
   /* Adesivos (por cima, com borda branca de adesivo): Deltarune, Terraria, PvZ e Minecraft */
@@ -84,8 +84,6 @@ var Decor = (function () {
       trail: { colors: ['#ffd23d', '#f2761e', '#fff3c4'], size: 5, square: true, every: 70, life: 750, spread: 8, glow: '#ff9a3c', tail: 0.5 } },
     { a: 'ow_interloper', h: 130, dur: [14, 19], faces: 'left',
       trail: { colors: ['#dff6ff', '#8fe3ff', '#4fa8e8'], size: 6, square: false, every: 40, life: 1200, spread: 14, glow: '#8fe3ff', tail: 0.45 } },
-    { a: 'ow_stranger',   h: 110, dur: [38, 48], faces: null,
-      trail: { colors: ['#7fdcff', '#bfeeff'], size: 3, square: false, every: 140, life: 1500, spread: 30, glow: '#7fdcff', ring: true } },
     { a: 'tr_duke',       h: 96,  dur: [16, 22], faces: 'left',
       trail: { colors: ['#ffffff', '#bfeeff', '#7fd6ff'], size: 6, square: false, every: 80, life: 1100, spread: 12, glow: '#7fd6ff', tail: 0.45 } },
     { a: 'tr_eoc',        h: 100, dur: [16, 22], faces: 'left',
