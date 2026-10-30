@@ -20,22 +20,24 @@ const SITE = {
     { key: "github",    label: "GitHub",    value: "github.com/mauricioaires30", href: "https://github.com/mauricioaires30" }
   ],
 
-  // Linguagens: abbr é o texto curto exibido no "slot" da hotbar
+  // Linguagens: cada uma vira um item na hotbar do inventário (sprite = nome em js/sprites.js).
+  // Os slots que sobrarem ficam vazios.
   tech: [
-    { name: "Python",     abbr: "PY" },
-    { name: "Java",       abbr: "JV" },
-    { name: "GML",        abbr: "GM" },
-    { name: "GDScript",   abbr: "GD" },
-    { name: "JavaScript", abbr: "JS" },
-    { name: "TypeScript", abbr: "TS" }
+    { name: "Python",     sprite: "item_python" },
+    { name: "Java",       sprite: "item_java" },
+    { name: "GML",        sprite: "item_gml" },
+    { name: "GDScript",   sprite: "item_godot" },
+    { name: "JavaScript", sprite: "item_js" },
+    { name: "TypeScript", sprite: "item_ts" }
   ],
+  inventoryRows: 3,       // linhas do inventário acima da hotbar
 
   // Projetos: dados fixos (textos ficam em I18N.<lang>.projects.items, na MESMA ordem)
   projects: [
     { icon: "note",      stack: ["Kotlin", "Jetpack Compose"], repo: "https://github.com/mauricioaires30/TruePlayer", demo: "" },
     { icon: "cross",     stack: ["SaaS", "Web"],               repo: "", demo: "https://www.r1academy.app/landingpage" },
-    { icon: "container", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
-    { icon: "leaf",      stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
+    { icon: "containers", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
+    { icon: "victoria",  stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
   ]
 };
 
@@ -79,7 +81,7 @@ const I18N = {
     },
     tech: {
       title: "Linguagens",
-      hint: "Meu inventário de linguagens."
+      panel: "Inventário"
     },
     projects: {
       title: "Projetos",
@@ -142,7 +144,7 @@ const I18N = {
     },
     tech: {
       title: "Languages",
-      hint: "My language inventory."
+      panel: "Inventory"
     },
     projects: {
       title: "Projects",

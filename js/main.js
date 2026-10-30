@@ -33,17 +33,49 @@
     return holder;
   }
 
+  /* Gerador pseudoaleatório com semente: os enfeites ficam iguais em toda visita */
+  function seeded(seed) {
+    var x = seed * 9301 + 49297;
+    return function () { x = (x * 9301 + 49297) % 233280; return x / 233280; };
+  }
+
   /* ---------- Sprites declarados no HTML (<span data-sprite="...">) ---------- */
   document.querySelectorAll('[data-sprite]').forEach(function (node) {
     node.classList.add('sprite');
     node.innerHTML = spriteSVG(node.getAttribute('data-sprite'), Number(node.getAttribute('data-scale')) || 4);
   });
 
+  /* ---------- Escrita nomai (Outer Wilds): <span data-nomai="quantidade:semente"> ---------- */
+  var GLYPHS = ['nomai1', 'nomai2', 'nomai3', 'nomai4', 'nomai5'];
+
+  function fillNomai(node, count, seed) {
+    var rand = seeded(seed);
+    for (var i = 0; i < count; i++) {
+      node.appendChild(sprite(GLYPHS[Math.floor(rand() * GLYPHS.length)], 2));
+    }
+  }
+
+  document.querySelectorAll('[data-nomai]').forEach(function (node) {
+    var parts = node.getAttribute('data-nomai').split(':');
+    node.setAttribute('aria-hidden', 'true');
+    fillNomai(node, Number(parts[0]), Number(parts[1]));
+  });
+
+  /* Placa nomai ao lado da fogueira */
+  (function buildSlab() {
+    var slab = document.getElementById('slab');
+    [6, 4, 5].forEach(function (count, i) {
+      var line = el('span', { class: 'nomai slab__line' });
+      fillNomai(line, count, 20 + i);
+      slab.appendChild(line);
+    });
+  })();
+
   /* Texturas de chão (grama e terra) usadas no rodapé via CSS */
   root.style.setProperty('--tile-grass', spriteURL('grass', 8));
   root.style.setProperty('--tile-dirt', spriteURL('dirt', 8));
 
-  /* ---------- Céu: nuvens (dia) e estrelas (noite) ---------- */
+  /* ---------- Céu: nuvens (dia), estrelas e planetas (noite) ---------- */
   (function buildSky() {
     var sky = document.getElementById('sky');
     var clouds = [[6, 14, 5, 70], [38, 8, 4, 95], [68, 20, 6, 80]];
@@ -60,6 +92,32 @@
       n.classList.add('sky__star');
       n.style.cssText = 'left:' + p[0] + '%;top:' + p[1] + '%;animation-delay:-' + (i * 0.37).toFixed(2) + 's';
       sky.appendChild(n);
+    });
+    // [sprite, left %, top %, escala]
+    var planets = [['giants', 57, 7, 4], ['brittle', 93, 30, 4], ['ember', 47, 84, 4], ['ember', 51, 88, 3]];
+    planets.forEach(function (p, i) {
+      var n = sprite(p[0], p[3], i === 3 ? { B: '#8a7a6a', L: '#a89a88', D: '#5e5246', l: '#7a6c5e', H: '#c8bcaa' } : null);
+      n.classList.add('sky__planet');
+      n.style.cssText = 'left:' + p[1] + '%;top:' + p[2] + '%;animation-delay:-' + i * 0.8 + 's';
+      sky.appendChild(n);
+    });
+  })();
+
+  /* ---------- Rodapé: cabeças de mobs, flores e tochas sobre a grama ---------- */
+  (function buildGround() {
+    var wrap = document.getElementById('footer-decos');
+    // [sprite, left %, escala, classe extra]
+    var items = [
+      ['poppy', 3, 5], ['creeper', 11, 6, 'mob'], ['torch', 21, 5, 'torch'], ['skeleton', 30, 6, 'mob'],
+      ['dandelion', 40, 5], ['sunflower', 49, 3], ['zombie', 60, 6, 'mob'], ['torch', 70, 5, 'torch'],
+      ['pig', 79, 6, 'mob'], ['poppy', 89, 4], ['dandelion', 95, 4]
+    ];
+    items.forEach(function (it) {
+      var n = sprite(it[0], it[2]);
+      n.classList.add('footer__deco');
+      if (it[3]) n.classList.add('footer__deco--' + it[3]);
+      n.style.left = it[1] + '%';
+      wrap.appendChild(n);
     });
   })();
 
@@ -99,15 +157,46 @@
     });
   }
 
-  function renderTech() {
-    var list = document.getElementById('tech-list');
-    list.replaceChildren();
-    SITE.tech.forEach(function (lang) {
-      list.appendChild(el('li', { class: 'slot-wrap' }, [
-        el('span', { class: 'slot', text: lang.abbr, 'aria-hidden': 'true' }),
-        el('span', { class: 'slot__name', text: lang.name })
-      ]));
+  /* ---------- Inventário do Minecraft (linguagens na hotbar) ---------- */
+  var selectedSlot = 0;
+
+  function makeSlot(item, index) {
+    var col = index % 9;
+    if (!item) return el('li', { class: 'slot slot--empty', 'aria-hidden': 'true' });
+
+    var slot = el('li', { class: 'slot' + (col > 4 ? ' slot--tip-right' : ''), tabindex: '0', role: 'button', 'aria-label': item.name }, [
+      el('span', { class: 'slot__item' }, [sprite(item.sprite, 4)]),
+      el('span', { class: 'slot__tip', role: 'tooltip', text: item.name })
+    ]);
+    if (index === selectedSlot) slot.classList.add('is-selected');
+
+    function select() {
+      selectedSlot = index;
+      document.querySelectorAll('.inv .slot.is-selected').forEach(function (s) { s.classList.remove('is-selected'); });
+      slot.classList.add('is-selected');
+    }
+    slot.addEventListener('click', select);
+    slot.addEventListener('mouseenter', select);
+    slot.addEventListener('focus', select);
+    slot.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
     });
+    return slot;
+  }
+
+  function renderTech(t) {
+    var inv = document.getElementById('tech-list');
+    inv.replaceChildren();
+
+    var grid = el('ul', { class: 'inv__grid', 'aria-hidden': 'true' });
+    for (var i = 0; i < SITE.inventoryRows * 9; i++) grid.appendChild(makeSlot(null, i));
+
+    var hotbar = el('ul', { class: 'inv__grid inv__hotbar', 'aria-label': t.tech.title });
+    for (i = 0; i < 9; i++) hotbar.appendChild(makeSlot(SITE.tech[i], i));
+
+    inv.appendChild(el('p', { class: 'inv__title', text: t.tech.panel }));
+    inv.appendChild(grid);
+    inv.appendChild(hotbar);
   }
 
   function renderProjects(t) {
@@ -121,9 +210,8 @@
       if (p.repo) links.appendChild(el('a', { class: 'btn btn--sm btn--ghost', href: p.repo, target: '_blank', rel: 'noopener noreferrer', text: t.projects.code + ' ↗' }));
       if (p.demo) links.appendChild(el('a', { class: 'btn btn--sm btn--ghost', href: p.demo, target: '_blank', rel: 'noopener noreferrer', text: t.projects.demo + ' ↗' }));
 
-      var icon = el('span', { class: 'project__icon' }, [sprite(p.icon, 4)]);
       var head = el('div', { class: 'project__head' }, [
-        icon,
+        el('span', { class: 'project__icon' }, [sprite(p.icon, 4)]),
         el('div', {}, [
           el('span', { class: 'project__phase', text: t.projects.phase + ' ' + String(i + 1).padStart(2, '0') }),
           el('h3', { text: txt.title })
@@ -171,7 +259,7 @@
     box.replaceChildren();
     dialog.classList.remove('is-done');
 
-    var paragraphs = lines.map(function (line) {
+    var paragraphs = lines.map(function () {
       var p = el('p', {});
       box.appendChild(p);
       return p;
@@ -196,7 +284,7 @@
   function setLang(lang) {
     var t = I18N[lang];
     if (!t) return;
-    var changed = lang !== currentLang || !typing.started;
+    var changed = lang !== currentLang;
     store.set('lang', lang);
     root.lang = t.lang;
     document.title = t.meta.title;
@@ -219,13 +307,13 @@
     });
 
     renderStats(t);
+    renderTech(t);
     renderProjects(t);
-    if (changed) { typing.started = true; typeDialog(t.hero.dialog); }
+    if (changed) typeDialog(t.hero.dialog);
     currentLang = lang;
   }
 
   var currentLang = null;
-  var initialLang = detectLang();
 
   document.querySelectorAll('.lang__btn').forEach(function (b) {
     b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
@@ -238,8 +326,7 @@
   });
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  var qr = document.getElementById('pix-qr');
-  qr.src = SITE.pixQr;
+  document.getElementById('pix-qr').src = SITE.pixQr;
 
   var avatar = document.getElementById('avatar-img');
   avatar.addEventListener('error', function () {
@@ -250,7 +337,6 @@
   });
   avatar.src = SITE.avatar;
 
-  renderTech();
   renderContacts();
 
   /* ---------- Sóis (brincadeira de Plants vs. Zombies) ---------- */
@@ -299,5 +385,5 @@
   if (!reduceMotion) setTimeout(dropSun, 9000);
 
   /* ---------- Init ---------- */
-  setLang(initialLang);
+  setLang(detectLang());
 })();
