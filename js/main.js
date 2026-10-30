@@ -39,47 +39,29 @@
     node.innerHTML = spriteHTML(node.getAttribute('data-sprite'), Number(node.getAttribute('data-scale')) || 4);
   });
 
-  /* ---------- Escrita nomai (Outer Wilds): conversas em espiral atrás do conteúdo ---------- */
+  /* ---------- Escrita nomai (Outer Wilds): uma corrente só, pela página inteira ---------- */
   document.body.insertAdjacentHTML('afterbegin', nomaiDefs());
+  var mainEl = document.getElementById('main');
+  var nomaiLayer = el('div', { class: 'nomai-layer', 'aria-hidden': 'true' });
+  mainEl.appendChild(nomaiLayer);
+  var nomaiSize = { w: 0, h: 0 };
 
-  // [seção, semente, left %, top %, largura px, rotação]
-  var NOMAI = [
-    ['top', 3, 40, 2, 520, -10], ['top', 14, -8, 50, 380, 150],
-    ['about', 8, 66, -10, 480, 20], ['about', 27, -10, 40, 360, -140],
-    ['tech', 41, 60, 4, 540, 200], ['tech', 55, -6, 60, 320, 40],
-    ['projects', 62, -10, 0, 460, 70], ['projects', 73, 74, 30, 440, -30], ['projects', 88, 28, 76, 420, 170],
-    ['contact', 95, 44, -14, 440, 100], ['contact', 101, 82, 58, 340, -60]
-  ];
-
-  var nomaiLayers = {};
-  NOMAI.forEach(function (n) {
-    var section = document.getElementById(n[0]);
-    var layer = nomaiLayers[n[0]];
-    if (!layer) {
-      layer = nomaiLayers[n[0]] = el('div', { class: 'nomai-bg', 'aria-hidden': 'true' });
-      section.insertBefore(layer, section.firstChild);
-    }
-    var item = el('span', { class: 'nomai-bg__item' });
-    item.innerHTML = nomaiConversationSVG(n[1]);
-    item.style.cssText = 'left:' + n[2] + '%;top:' + n[3] + '%;width:min(' + n[4] + 'px,80vw);transform:rotate(' + n[5] + 'deg)';
-    layer.appendChild(item);
-  });
-
-  // Placa nomai ao lado da fogueira
-  document.getElementById('slab').innerHTML = nomaiConversationSVG(120);
-
-  // A escrita é traduzida quando aparece na tela, como no jogo
-  var nomaiNodes = document.querySelectorAll('.nomai-bg__item, .slab');
-  if ('IntersectionObserver' in window && !reduceMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-read'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.2 });
-    nomaiNodes.forEach(function (n) { io.observe(n); });
-  } else {
-    nomaiNodes.forEach(function (n) { n.classList.add('is-read'); });
+  function buildNomai(force) {
+    var w = mainEl.clientWidth, h = mainEl.scrollHeight;
+    if (!force && Math.abs(w - nomaiSize.w) < 30 && Math.abs(h - nomaiSize.h) < 80) return;
+    nomaiSize = { w: w, h: h };
+    nomaiLayer.innerHTML = nomaiChainSVG(w, h, 7);
   }
+
+  var nomaiTimer;
+  function scheduleNomai(force) {
+    clearTimeout(nomaiTimer);
+    nomaiTimer = setTimeout(function () { buildNomai(force); }, 220);
+  }
+  buildNomai(true);
+  window.addEventListener('resize', function () { scheduleNomai(false); });
+  window.addEventListener('load', function () { scheduleNomai(true); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { scheduleNomai(false); });
 
   /* ---------- Céu: nuvens (dia), estrelas e planetas (noite) ---------- */
   (function buildSky() {
@@ -98,39 +80,6 @@
       n.classList.add('sky__star');
       n.style.cssText = 'left:' + p[0] + '%;top:' + p[1] + '%;animation-delay:-' + (i * 0.37).toFixed(2) + 's';
       sky.appendChild(n);
-    });
-    // [sprite, left %, top %, escala]
-    var planets = [
-      ['ow_interloper', 27, 2, 4], ['ow_giants', 55, 4, 5], ['ow_brittle', 92, 22, 3.5], ['ow_lantern', 97, 12, 2.5],
-      ['ow_twins', 47, 76, 3], ['ow_quantum', 70, 90, 3], ['ow_bramble', 95, 80, 3.5]
-    ];
-    planets.forEach(function (p, i) {
-      var n = sprite(p[0], p[3]);
-      n.classList.add('sky__planet');
-      n.style.cssText = 'left:' + p[1] + '%;top:' + p[2] + '%;animation-delay:-' + i * 0.8 + 's';
-      sky.appendChild(n);
-    });
-    // a nave atravessando o céu de tempos em tempos
-    var flame = sprite('shipflame', 3);
-    flame.classList.add('ship__flame');
-    sky.appendChild(el('span', { class: 'ship' }, [el('span', { class: 'ship__bob' }, [flame, sprite('ship', 3)])]));
-  })();
-
-  /* ---------- Rodapé: cabeças de mobs, flores e tochas sobre a grama ---------- */
-  (function buildGround() {
-    var wrap = document.getElementById('footer-decos');
-    // [sprite, left %, escala, classe extra]
-    var items = [
-      ['mc_poppy', 3, 3], ['mc_creeper', 11, 4, 'mob'], ['mc_torch', 20, 4, 'torch'], ['mc_skeleton', 29, 4, 'mob'],
-      ['mc_dandelion', 38, 3], ['sunflower', 48, 4], ['mc_zombie', 58, 4, 'mob'], ['mc_campfire', 67, 4, 'torch'],
-      ['mc_wither', 76, 4, 'mob'], ['mc_piglin', 85, 4, 'mob'], ['mc_torch', 94, 4, 'torch']
-    ];
-    items.forEach(function (it) {
-      var n = sprite(it[0], it[2]);
-      n.classList.add('footer__deco');
-      if (it[3]) n.classList.add('footer__deco--' + it[3]);
-      n.style.left = it[1] + '%';
-      wrap.appendChild(n);
     });
   })();
 
@@ -170,11 +119,17 @@
     });
   }
 
-  /* ---------- Hotbar do Minecraft (linguagens) ----------
+  /* ---------- Hotbar do Minecraft (linguagens), com vida, armadura, fome e XP ----------
    * Passar o mouse (ou focar com o teclado) move a moldura branca de seleção
-   * e mostra o nome do item acima da barra, como ao trocar de item no jogo. */
+   * e mostra o nome do item, como ao trocar de item no jogo. */
   var selectedSlot = 0;
   var nameTimer;
+
+  function hudRow(file, n, cls) {
+    var row = el('div', { class: 'mc__row ' + cls });
+    for (var i = 0; i < n; i++) row.appendChild(el('img', { src: 'assets/games/mc-hud-' + file + '.png', alt: '', width: '9', height: '9' }));
+    return row;
+  }
 
   function renderTech() {
     var wrap = document.getElementById('tech-list');
@@ -198,7 +153,9 @@
       var item = SITE.tech[i];
       var slot = el('li', { class: 'hotbar__slot', style: '--i:' + i });
       if (item) {
-        var btn = el('button', { type: 'button', class: 'hotbar__btn', 'aria-label': item.name }, [sprite(item.sprite, 4)]);
+        var btn = el('button', { type: 'button', class: 'hotbar__btn', 'aria-label': item.name }, [
+          el('img', { src: item.logo, alt: '', width: '48', height: '48', class: 'hotbar__logo' })
+        ]);
         btn.addEventListener('focus', select.bind(null, i, true));
         btn.addEventListener('click', select.bind(null, i, true));
         slot.appendChild(btn);
@@ -210,8 +167,16 @@
     }
     bar.appendChild(frame);
 
-    wrap.appendChild(name);
-    wrap.appendChild(bar);
+    var hud = el('div', { class: 'mc__hud', 'aria-hidden': 'true' }, [
+      el('div', { class: 'mc__left' }, [hudRow('armor', 10, 'mc__armor'), hudRow('heart', 10, 'mc__hearts')]),
+      hudRow('hunger', 10, 'mc__hunger')
+    ]);
+    var xp = el('div', { class: 'mc__xp', 'aria-hidden': 'true' }, [
+      el('span', { class: 'mc__lvl', text: String(SITE.tech.length) }),
+      el('span', { class: 'mc__xpfill' })
+    ]);
+
+    wrap.appendChild(el('div', { class: 'mc' }, [name, hud, xp, bar]));
     select(selectedSlot, false);
   }
 
@@ -326,6 +291,7 @@
     renderProjects(t);
     if (changed) typeDialog(t.hero.dialog);
     currentLang = lang;
+    scheduleNomai(false);
   }
 
   var currentLang = null;
@@ -355,39 +321,15 @@
   renderContacts();
   renderTech();
 
-  /* ---------- Sóis (brincadeira de Plants vs. Zombies) ---------- */
-  var sunCount = parseInt(store.get('suns'), 10) || 0;
-  var sunEl = document.getElementById('sun-count');
-  sunEl.textContent = sunCount;
-
-  function addSuns(n, x, y) {
-    sunCount += n;
-    sunEl.textContent = sunCount;
-    store.set('suns', String(sunCount));
-    if (x != null && !reduceMotion) {
-      var pop = el('span', { class: 'sun-pop', text: '+' + n });
-      pop.style.left = x + 'px';
-      pop.style.top = y + 'px';
-      document.body.appendChild(pop);
-      setTimeout(function () { pop.remove(); }, 900);
-    }
-  }
-
-  var sunBtn = document.getElementById('sun-btn');
-  sunBtn.addEventListener('click', function () {
-    var r = sunBtn.getBoundingClientRect();
-    addSuns(25, r.left + r.width / 2, r.bottom);
-  });
-
+  /* ---------- Sóis que caem (Plants vs. Zombies): clique e o sol some ---------- */
   function dropSun() {
     if (document.hidden) return scheduleSun();
     var drop = el('button', { type: 'button', class: 'sun-drop', 'aria-label': I18N[currentLang].ui.sunDrop });
-    drop.appendChild(sprite('sun', 10));
+    drop.appendChild(sprite('sun', 0.7));
     drop.style.left = (6 + Math.random() * 84) + '%';
     drop.addEventListener('click', function () {
-      var r = drop.getBoundingClientRect();
-      addSuns(25, r.left + r.width / 2, r.top);
-      drop.remove();
+      drop.classList.add('is-popped');
+      setTimeout(function () { drop.remove(); }, 220);
     });
     drop.addEventListener('animationend', function () { drop.remove(); });
     document.body.appendChild(drop);
@@ -402,4 +344,6 @@
 
   /* ---------- Init ---------- */
   setLang(detectLang());
+  Decor.init({ reduceMotion: reduceMotion });
+  Lawn.init();
 })();

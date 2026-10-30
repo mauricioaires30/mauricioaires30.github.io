@@ -20,17 +20,17 @@ const SITE = {
     { key: "github",    label: "GitHub",    value: "github.com/mauricioaires30", href: "https://github.com/mauricioaires30" }
   ],
 
-  // Linguagens: cada uma vira um item na hotbar do Minecraft (sprite = nome em js/sprites.js).
+  // Linguagens: cada uma vira um item na hotbar do Minecraft (logo oficial em assets/logos).
   // A hotbar tem 9 slots; os que sobrarem ficam vazios.
   tech: [
-    { name: "Python",     sprite: "item_python" },
-    { name: "Java",       sprite: "item_java" },
-    { name: "GML",        sprite: "item_gml" },
-    { name: "GDScript",   sprite: "item_godot" },
-    { name: "JavaScript", sprite: "item_js" },
-    { name: "TypeScript", sprite: "item_ts" },
-    { name: "HTML",       sprite: "item_html" },
-    { name: "CSS",        sprite: "item_css" }
+    { name: "HTML",       logo: "assets/logos/html5.svg" },
+    { name: "CSS",        logo: "assets/logos/css3.svg" },
+    { name: "JavaScript", logo: "assets/logos/javascript.svg" },
+    { name: "TypeScript", logo: "assets/logos/typescript.svg" },
+    { name: "Python",     logo: "assets/logos/python.svg" },
+    { name: "Java",       logo: "assets/logos/java.svg" },
+    { name: "GDScript",   logo: "assets/logos/godot.svg" },
+    { name: "GML",        logo: "assets/logos/gamemaker.svg" }
   ],
 
   // Projetos: dados fixos (textos ficam em I18N.<lang>.projects.items, na MESMA ordem)
@@ -53,7 +53,6 @@ const I18N = {
     ui: {
       skip: "Ir para o conteúdo",
       themeToggle: "Alternar entre dia e noite",
-      sun: "Sóis coletados",
       sunDrop: "Coletar sol"
     },
     nav: { about: "Sobre", tech: "Linguagens", projects: "Projetos", contact: "Contato" },
@@ -63,8 +62,7 @@ const I18N = {
       tagline: "Graduando em Ciência da Computação na UFPA.",
       dialog: [
         "* Você encontrou o portfólio do Mauricio.",
-        "* Aqui tem jogos, software e muita pixel art.",
-        "* Isso te enche de determinação."
+        "* Aqui tem jogos, software e muita pixel art."
       ],
       cta1: "Ver projetos",
       cta2: "Entrar em contato",
@@ -105,7 +103,7 @@ const I18N = {
     },
     footer: {
       text: "Feito com HTML, CSS e JS.",
-      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale © Toby Fox. Artes usadas como homenagem, num site pessoal sem fins comerciais."
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale e Deltarune © Toby Fox. Artes usadas como homenagem, num site pessoal sem fins comerciais."
     }
   },
 
@@ -118,7 +116,6 @@ const I18N = {
     ui: {
       skip: "Skip to content",
       themeToggle: "Switch between day and night",
-      sun: "Suns collected",
       sunDrop: "Collect sun"
     },
     nav: { about: "About", tech: "Languages", projects: "Projects", contact: "Contact" },
@@ -128,8 +125,7 @@ const I18N = {
       tagline: "Computer Science student at UFPA.",
       dialog: [
         "* You found Mauricio's portfolio.",
-        "* There are games, software and lots of pixel art here.",
-        "* It fills you with determination."
+        "* There are games, software and lots of pixel art here."
       ],
       cta1: "View projects",
       cta2: "Get in touch",
@@ -170,7 +166,7 @@ const I18N = {
     },
     footer: {
       text: "Built with HTML, CSS and JS.",
-      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale © Toby Fox. Art used as a tribute on a personal, non-commercial site."
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale and Deltarune © Toby Fox. Art used as a tribute on a personal, non-commercial site."
     }
   }
 };

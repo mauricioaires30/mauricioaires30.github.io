@@ -93,10 +93,10 @@ const SPRITES = {
       "BBBBBBBYYYYYYY"
     ]
   },
-  /* Flor da vitória-régia (Victoria amazonica) sobre a folha */
+  /* Flor da vitoria-regia (Victoria amazonica), so a flor */
   victoria: {
-    pal: { P: "#f06aa8", p: "#c2297a", W: "#ffd6e8", G: "#2f7a33", g: "#58b85a", w: "#8fd3f0" },
-    outline: "#243a24",
+    pal: { P: "#f06aa8", p: "#c2297a", W: "#ffd6e8" },
+    outline: "#4a1530",
     rows: [
       ".........P.........",
       "........PPP........",
@@ -104,197 +104,7 @@ const SPRITES = {
       ".....PPPPpPPPP.....",
       "...PPWWPPpPPWWPP...",
       "..PWWWPPPpPPPWWWP..",
-      "..PPWWPPPPPPPWWPP..",
-      "....GGGGGGGGGGG....",
-      "..GGGgggggggggGGG..",
-      ".GGgggggggggggggGG.",
-      "GGgggggggggggggggGG",
-      ".GGGGGGGGGGGGGGGGG.",
-      "...wwwwwwwwwwwww..."
-    ]
-  },
-
-
-  /* ---------- Itens do inventário (linguagens) ---------- */
-  item_python: {
-    pal: { B: "#3776ab", Y: "#ffd43b", w: "#ffffff" },
-    rows: [
-      ".BBBBBB.....",
-      "BBBBBBBB....",
-      "BwBBBBBB....",
-      "BBBBBBBB....",
-      "BBBBYYYYYYY.",
-      "BBBBYYYYYYYY",
-      "....YYYYYYYY",
-      "....YYYYYYYY",
-      "....YYYYYwYY",
-      "....YYYYYYYY",
-      ".....YYYYYY."
-    ]
-  },
-  item_java: {
-    pal: { R: "#e8453c", B: "#2a6fb5" },
-    rows: [
-      "...R..R.....",
-      "....R..R....",
-      ".BBBBBBBB...",
-      ".BBBBBBBBBB.",
-      ".BBBBBBBB.BB",
-      ".BBBBBBBB.BB",
-      ".BBBBBBBBBB.",
-      "..BBBBBBB...",
-      "RRRRRRRRRRR."
-    ]
-  },
-  item_gml: {
-    pal: { P: "#6a4fc8", W: "#ffffff", Y: "#ffd43b", R: "#e8453c" },
-    rows: [
-      "..PPPPPPPP..",
-      ".PPPPPPPPPP.",
-      "PPPWPPPPPYPP",
-      "PPWWWPPPYPRP",
-      "PPPWPPPPPRPP",
-      "PPPPPPPPPPPP",
-      ".PPPP..PPPP.",
-      "..PP....PP.."
-    ]
-  },
-  item_godot: {
-    pal: { B: "#478cbf", W: "#ffffff", k: "#1b2a3a", n: "#1b2a3a" },
-    rows: [
-      "..B......B..",
-      ".BBB....BBB.",
-      ".BBBBBBBBBB.",
-      ".BBBBBBBBBB.",
-      "BBWWBBBBWWBB",
-      "BBWkBBBBWkBB",
-      "BBWWBBBBWWBB",
-      "BBBBBnnBBBBB",
-      ".BBBBBBBBBB.",
-      "..BBBBBBBB..",
-      "...BBBBBB..."
-    ]
-  },
-  item_js: {
-    pal: { Y: "#f7df1e", X: "#1a1a1a" },
-    rows: [
-      "YYYYYYYYYYYY",
-      "YYYYYYYYYYYY",
-      "YYYYYYYYYYYY",
-      "YYYYYYYYYYYY",
-      "YYXXXYYXXXYY",
-      "YYYYXYYXYYYY",
-      "YYYYXYYXXXYY",
-      "YYXYXYYYYXYY",
-      "YYYXYYYXXXYY",
-      "YYYYYYYYYYYY",
-      "YYYYYYYYYYYY",
-      "YYYYYYYYYYYY"
-    ]
-  },
-  item_ts: {
-    pal: { B: "#3178c6", W: "#ffffff" },
-    rows: [
-      "BBBBBBBBBBBB",
-      "BBBBBBBBBBBB",
-      "BBBBBBBBBBBB",
-      "BBBBBBBBBBBB",
-      "BBWWWBBWWWBB",
-      "BBBWBBBWBBBB",
-      "BBBWBBBWWWBB",
-      "BBBWBBBBBWBB",
-      "BBBWBBBWWWBB",
-      "BBBBBBBBBBBB",
-      "BBBBBBBBBBBB",
-      "BBBBBBBBBBBB"
-    ]
-  },
-
-  item_html: {
-    pal: { H: "#e34f26", h: "#f06529", W: "#ffffff" },
-    rows: [
-      "HHHHHHhhhhhh",
-      "HHHHHHhhhhhh",
-      "HHHHWWWWhhhh",
-      "HHHHWHhhhhhh",
-      "HHHHWWWhhhhh",
-      "HHHHHHhWhhhh",
-      "HHHHHHhWhhhh",
-      "HHHHWWWhhhhh",
-      ".HHHHHhhhhh.",
-      "..HHHHhhhh..",
-      "...HHHhhh...",
-      ".....Hh....."
-    ]
-  },
-  item_css: {
-    pal: { C: "#1572b6", c: "#33a9dc", W: "#ffffff" },
-    rows: [
-      "CCCCCCcccccc",
-      "CCCCCCcccccc",
-      "CCCCWWWWcccc",
-      "CCCCCCcWcccc",
-      "CCCCCWWWcccc",
-      "CCCCCCcWcccc",
-      "CCCCCCcWcccc",
-      "CCCCWWWWcccc",
-      ".CCCCCccccc.",
-      "..CCCCcccc..",
-      "...CCCccc...",
-      ".....Cc....."
-    ]
-  },
-  /* nave dos Hearthians (Outer Wilds), desenhada em pixel art */
-  ship: {
-    pal: { k: "#2a1d14", M: "#9aa0aa", m: "#61666f", W: "#c07a3e", w: "#8a5226", R: "#c94a3a", G: "#8fe3ff", g: "#3a8fb0" },
-    rows: [
-      "........kkkkkkk.......",
-      "......kkMMMMMMMkk.....",
-      "....kkWWWWWWWWWMMk....",
-      "...kWWWWWWWWWWWMGGk...",
-      "..kWWRRRRRWWWWWMGGGk..",
-      "..kmWWWWWWWWWWWMgGGGk.",
-      "..kmWWWWWWWWWWWMMMMMMk",
-      "..kmwwwwwwwwwwwMMMMMk.",
-      "..kmwwwwwwwwwwwmmmmk..",
-      "...kwwwwwwwwwwwmmk....",
-      "....kkkkkkkkkkkkk.....",
-      ".....k.k.....k.k......",
-      "....kk.kk...kk.kk....."
-    ]
-  },
-  shipflame: {
-    pal: { O: "#f2761e", Y: "#ffd23d", W: "#fff3c4" },
-    rows: [
-      "..OO",
-      ".OYY",
-      "OYWY",
-      ".OYY",
-      "..OO"
-    ]
-  },
-
-  /* ---------- Outer Wilds ---------- */
-  /* Fogueira com marshmallow no espeto */
-  campfire: {
-    pal: { O: "#f2761e", Y: "#ffc83d", W: "#fff3c4", B: "#6b4423", b: "#3f2814", s: "#8b5a2b", w: "#fff7e6", t: "#d9a066", T: "#8a5a2b" },
-    rows: [
-      "...................s",
-      "..................s.",
-      ".................s..",
-      "................s...",
-      "...........wwwws....",
-      "..........wwwwww....",
-      "..........twwwwt....",
-      "...........tTTt.....",
-      ".........OOYYOO.....",
-      "........OOYYYYOO....",
-      "........OYYWWYYO....",
-      ".......OOYYWWYYOO...",
-      "......OOYYYWWYYYOO..",
-      ".....BBBBBBBBBBBBB..",
-      "....BbBBBBBBBBBBbB..",
-      "...BB............BB."
+      "..PPWWPPPPPPPWWPP.."
     ]
   }
 };
@@ -340,41 +150,58 @@ function spriteSVG(name, scale, palOverride, outlineOverride) {
     ' shape-rendering="crispEdges" aria-hidden="true" focusable="false">' + rects + "</svg>";
 }
 
-/* ---------- Arte dos jogos (PNGs em assets/games) ----------
- * w/h = tamanho base; a escala multiplica, igual aos sprites.
- * pixel: true mantém os pixels nítidos ao ampliar. */
+/* ---------- Arte dos jogos (arquivos em assets/games) ----------
+ * w/h = tamanho natural do arquivo em pixels. A escala multiplica esse tamanho
+ * (escala 1 = tamanho natural). pixel: true mantem os pixels nitidos ao ampliar. */
+function art(file, w, h, pixel) { return { src: "assets/games/" + file, w: w, h: h, pixel: !!pixel }; }
+
 const GAME_ART = {
-  soul:         { src: "assets/games/ut-soul.png",           w: 16, h: 16, pixel: true },
-  sun:          { src: "assets/games/pvz-sun.png",           w: 10, h: 10 },
-  sunflower:    { src: "assets/games/pvz-sunflower.png",     w: 18, h: 20.3 },
-  mc_creeper:   { src: "assets/games/mc-creeper-head.png",   w: 16, h: 16, pixel: true },
-  mc_skeleton:  { src: "assets/games/mc-skeleton-skull.png", w: 16, h: 16, pixel: true },
-  mc_zombie:    { src: "assets/games/mc-zombie-head.png",    w: 16, h: 16, pixel: true },
-  mc_wither:    { src: "assets/games/mc-wither-skull.png",   w: 16, h: 16, pixel: true },
-  mc_piglin:    { src: "assets/games/mc-piglin-head.png",    w: 16, h: 16, pixel: true },
-  mc_torch:     { src: "assets/games/mc-torch.png",          w: 16, h: 16, pixel: true },
-  mc_poppy:     { src: "assets/games/mc-poppy.png",          w: 16, h: 16, pixel: true },
-  mc_dandelion: { src: "assets/games/mc-dandelion.png",      w: 16, h: 16, pixel: true },
-  mc_campfire:  { src: "assets/games/mc-campfire.png",       w: 16, h: 16, pixel: true },
-  /* planetas: arte ilustrada do mapa do sistema solar de Outer Wilds */
-  ow_timber:     { src: "assets/games/ow-timber-hearth.png",   w: 16, h: 16.7 },
-  ow_attlerock:  { src: "assets/games/ow-attlerock.png",       w: 6,  h: 6 },
-  ow_giants:     { src: "assets/games/ow-giants-deep.png",     w: 16, h: 16 },
-  ow_brittle:    { src: "assets/games/ow-brittle-hollow.png",  w: 16, h: 19.1 },
-  ow_lantern:    { src: "assets/games/ow-hollows-lantern.png", w: 7,  h: 7.9 },
-  ow_bramble:    { src: "assets/games/ow-dark-bramble.png",    w: 16, h: 17.3 },
-  ow_twins:      { src: "assets/games/ow-hourglass-twins.png", w: 8,  h: 15.75 },
-  ow_quantum:    { src: "assets/games/ow-quantum-moon.png",    w: 6,  h: 6 },
-  ow_interloper: { src: "assets/games/ow-interloper.png",      w: 22, h: 10.2 },
-  ow_ventures:   { src: "assets/games/ow-ventures.png",        w: 16, h: 12.5 },
-  ow_eye:        { src: "assets/games/ow-eye-of-the-universe.webp", w: 16, h: 16 },
-  ow_eye_symbol: { src: "assets/games/ow-eye-symbol.png",    w: 16, h: 13.1 }
+  /* Undertale / Deltarune (sprites oficiais, pixel art) */
+  soul:        art("ut-soul.png", 16, 16, true),
+  ut_sans:     art("ut-sans.png", 46, 60, true),
+  ut_papyrus:  art("ut-papyrus.png", 50, 84, true),
+  ut_flowey:   art("ut-flowey.png", 42, 42, true),
+  ut_toriel:   art("ut-toriel.png", 50, 104, true),
+  ut_dog:      art("ut-annoying-dog.webp", 44, 38, true),
+  dr_kris:     art("dr-kris.png", 38, 74, true),
+  dr_lancer:   art("dr-lancer.png", 60, 68, true),
+  dr_ralsei:   art("dr-ralsei.png", 46, 86, true),
+  dr_susie:    art("dr-susie.png", 50, 88, true),
+  dr_spamton:  art("dr-spamton.webp", 64, 76, true),
+
+  /* Plants vs. Zombies */
+  sun:         art("pvz-sun.png", 94, 97),
+  sunflower:   art("pvz-sunflower.png", 220, 248),
+  pvz_dave:    art("pvz-crazy-dave.png", 99, 240),
+  pvz_wallnut: art("pvz-wall-nut.png", 170, 197),
+
+  /* Minecraft: so a frente das cabecas dos mobs e alguns itens */
+  mc_face_creeper:  art("mc-face-creeper.png", 8, 8, true),
+  mc_face_skeleton: art("mc-face-skeleton.png", 8, 8, true),
+  mc_face_zombie:   art("mc-face-zombie.png", 8, 8, true),
+  mc_diamond:       art("mc-diamond.png", 16, 16, true),
+  mc_cake:          art("mc-cake.png", 16, 16, true),
+
+  /* Outer Wilds: planetas (recortes do mapa planetario oficial), naves e cometa */
+  ow_timber:     art("ow-timber-hearth.png", 130, 130),
+  ow_attlerock:  art("ow-attlerock.png", 50, 51),
+  ow_giants:     art("ow-giants-deep.png", 200, 200),
+  ow_brittle:    art("ow-brittle-hollow.png", 130, 159),
+  ow_lantern:    art("ow-hollows-lantern.png", 64, 74),
+  ow_bramble:    art("ow-dark-bramble.png", 200, 218),
+  ow_twins:      art("ow-hourglass-twins.png", 70, 132),
+  ow_quantum:    art("ow-quantum-moon.png", 52, 52),
+  ow_interloper: art("ow-interloper.png", 220, 90),
+  ow_stranger:   art("ow-stranger.png", 279, 360),
+  ow_ship:       art("ow-ship.png", 27, 26, true),
+  ow_ventures:   art("ow-ventures.png", 160, 125),
+  ow_eye:        art("ow-eye-of-the-universe.webp", 520, 520)
 };
 
-/* HTML de um sprite: usa a arte do jogo se existir, senão o pixel art em código. */
+/* HTML de um sprite: usa a arte do jogo se existir, senao o pixel art em codigo. */
 function spriteHTML(name, scale) {
-  var art = GAME_ART[name];
-  if (!art) return spriteSVG(name, scale);
-  return '<img src="' + art.src + '" width="' + Math.round(art.w * scale) + '" height="' + Math.round(art.h * scale) +
-    '" alt="" class="art' + (art.pixel ? ' art--pixel' : '') + '" loading="lazy" decoding="async">';
+  var a = GAME_ART[name];
+  if (!a) return spriteSVG(name, scale);
+  return '<img src="' + a.src + '" width="' + Math.round(a.w * scale) + '" height="' + Math.round(a.h * scale) +
+    '" alt="" class="art' + (a.pixel ? ' art--pixel' : '') + '" loading="lazy" decoding="async">';
 }
