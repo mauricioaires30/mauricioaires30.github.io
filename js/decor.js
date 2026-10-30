@@ -82,17 +82,17 @@ var Decor = (function () {
   var TRAFFIC = [
     { a: 'ow_ship',       h: 62,  dur: [22, 30], faces: 'left',
       trail: { colors: ['#ffd23d', '#f2761e', '#fff3c4'], size: 5, square: true, every: 70, life: 750, spread: 8, glow: '#ff9a3c', tail: 0.5 } },
-    { a: 'ow_interloper', h: 130, dur: [14, 19], faces: 'left',
+    { a: 'ow_interloper', h: 96,  dur: [14, 19], faces: 'left',
       trail: { colors: ['#dff6ff', '#8fe3ff', '#4fa8e8'], size: 6, square: false, every: 40, life: 1200, spread: 14, glow: '#8fe3ff', tail: 0.45 } },
+    { a: 'ow_stranger',   h: 96,  dur: [38, 48], faces: null, spin: true,
+      trail: { colors: ['#7fdcff', '#bfeeff', '#4fc9c0'], size: 4, square: false, every: 140, life: 1500, spread: 30, glow: '#7fdcff', ring: true } },
     { a: 'tr_duke',       h: 96,  dur: [16, 22], faces: 'left',
       trail: { colors: ['#ffffff', '#bfeeff', '#7fd6ff'], size: 6, square: false, every: 80, life: 1100, spread: 12, glow: '#7fd6ff', tail: 0.45 } },
     { a: 'tr_eoc',        h: 100, dur: [16, 22], faces: 'left',
       trail: { colors: ['#e03a3a', '#ff7b7b', '#8f1d1d'], size: 5, square: false, every: 70, life: 1000, spread: 12, glow: '#ff5a5a', tail: 0.4 } },
     { a: 'tr_wyvern',     h: 46,  dur: [20, 26], faces: 'left', bob: true,
       trail: { colors: ['#ffffff', '#e6f7ff', '#cfe9ff'], size: 7, square: false, every: 90, life: 1400, spread: 14, glow: '#ffffff', tail: 0.5 } },
-    { a: 'mc_parrot',     h: 78,  dur: [14, 20], faces: 'left', bob: true,
-      trail: { colors: ['#e53935', '#ffd23d', '#2a7de1'], size: 5, square: true, every: 90, life: 1000, spread: 10, glow: '#ffffff', tail: 0.4 } },
-    { a: 'tr_star',       h: 40,  dur: [4, 6],   faces: null, fall: true,
+    { a: 'tr_star',       h: 40,  dur: [4, 6],   faces: null, fall: true, spin: true,
       trail: { colors: ['#fff3a0', '#ffd23d', '#ffffff'], size: 5, square: true, every: 35, life: 800, spread: 6, glow: '#ffd23d', tail: 0.5 } }
   ];
 
@@ -195,6 +195,7 @@ var Decor = (function () {
     var node = document.createElement('span');
     node.className = 'traffic__item';
     node.innerHTML = spriteHTML(kind.a, h / a.h);
+    if (kind.spin && node.firstChild) node.firstChild.style.animation = (kind.a === 'ow_stranger' ? 'tspin 26s linear infinite' : 'tspin .7s linear infinite');   // a estrela gira ao cair; a roda do Desconhecido, bem devagar
     if (kind.bob && node.firstChild) node.firstChild.style.animation = 'bob .5s steps(2) infinite';   // bate as asas / balança
     box.appendChild(node);
 

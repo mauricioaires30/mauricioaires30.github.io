@@ -223,7 +223,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   box-shadow: 6px 10px 0 0 var(--shadow);
 }
 .eye__frame { display: grid; place-items: center; }
-.eye__frame img { width: 86%; height: auto; object-fit: contain; }
+.eye__frame img { width: 112%; height: 112%; max-width: none; object-fit: contain; }
 
 .stats {
   margin: 4px; padding: 1.1rem 1.2rem; background: #000; color: #fff; font-family: var(--dialog); font-size: 1.5rem; line-height: 1.2;
@@ -344,6 +344,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .orbit__sat { position: absolute; left: var(--radius); top: 0; line-height: 0; display: block;
   animation: orbit-unspin var(--dur) linear infinite; }
 .orbit__sat img { display: block; max-width: none; }
+@keyframes tspin { to { transform: rotate(360deg); } }
 @keyframes orbit-spin { to { transform: rotate(360deg); } }
 @keyframes orbit-unspin {
   from { transform: rotate(0deg) scaleY(var(--inv)) rotate(calc(var(--tilt) * -1)) translate(-50%, -50%); }
@@ -392,6 +393,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .pvz-hit { filter: brightness(1.8); }
 .pvz-fall { transform-origin: 50% 100%; animation: pvz-fall .75s ease-in forwards; }
 .pvz-fade { opacity: 0; transition: opacity .5s; }
+.pvz-head { position: absolute; left: 0; bottom: 0; will-change: transform; }
 @keyframes pvz-fall { to { transform: rotate(80deg) translateY(12px); opacity: 0; } }
 
 /* ============ Sóis que caem (clique e o sol some) ============ */

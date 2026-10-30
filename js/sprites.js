@@ -212,7 +212,6 @@ const GAME_ART = {
   mc_totem:         art("mc-totem.png", 14, 15, true),
   mc_gapple:        art("mc-golden-apple.png", 12, 14, true),
   mc_pearl:         art("mc-ender-pearl.png", 13, 13, true),
-  mc_parrot:        art("mc-parrot.png", 233, 331),
 
   /* Outer Wilds: planetas (recortes do mapa planetario oficial), naves e cometa */
   ow_timber    : art("map-timber-hearth.png", 162, 164),
@@ -223,14 +222,14 @@ const GAME_ART = {
   ow_bramble   : art("ow-dark-bramble.png", 200, 218),
   ow_twins     : art("map-twins.png", 135, 290),
   ow_quantum   : art("ow-quantum-moon.png", 52, 52),
-  ow_interloper: art("ow-interloper.webp", 460, 397),
+  ow_interloper: art("map-interloper.png", 336, 187),
+  ow_stranger:   art("ow-stranger.png", 227, 231),
   ow_sun       : art("map-sun.png", 343, 342),
   ow_station   : art("map-sun-station.png", 90, 63),
   ow_cannon    : art("map-probe-cannon.png", 200, 154),
-  ow_eye_symbol: art("ow-eye-symbol.png", 400, 328),
+  ow_eye_symbol: art("ow-eye-symbol.png", 360, 360),
   ow_ship:       art("ow-ship.png", 27, 26, true),
-  ow_ventures:   art("ow-ventures.png", 160, 125),
-  ow_eye:        art("ow-eye-of-the-universe.webp", 520, 520)
+  ow_ventures:   art("ow-ventures.png", 160, 125)
 };
 
 /* HTML de um sprite: usa a arte do jogo se existir, senao o pixel art em codigo. */
