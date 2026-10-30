@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mauricio Aires — Portfólio</title>
-  <meta name="description" content="Portfólio profissional na área de TI.">
+  <meta name="description" content="Desenvolvedor de software, artista pixel art e gamedev. Graduando em Ciência da Computação na UFPA.">
   <meta property="og:title" content="Mauricio Aires — Portfólio">
-  <meta property="og:description" content="Portfólio profissional na área de TI.">
+  <meta property="og:description" content="Desenvolvedor de software, artista pixel art e gamedev. Graduando em Ciência da Computação na UFPA.">
   <meta property="og:type" content="website">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <!-- Aplica o tema antes da renderização para evitar "flash" -->
   <script>
@@ -31,8 +31,8 @@
   <header class="header">
     <div class="container header__inner">
       <a class="logo" href="#top" aria-label="Início">
-        <span class="logo__mark">&lt;/&gt;</span>
-        <span data-site="shortName">Mauricio</span>
+        <span data-sprite="heart" data-scale="3"></span>
+        <span class="logo__text" data-site="shortName">Mauricio</span>
       </a>
 
       <nav class="nav" aria-label="Principal">
@@ -43,13 +43,17 @@
       </nav>
 
       <div class="controls">
+        <button type="button" class="sun-counter" id="sun-btn" data-i18n-attr="aria-label:ui.sun" aria-label="Sóis coletados">
+          <span data-sprite="sun" data-scale="2"></span>
+          <span id="sun-count">0</span>
+        </button>
         <div class="lang" role="group" aria-label="Idioma / Language">
           <button type="button" class="lang__btn" data-lang="pt" aria-pressed="true">PT</button>
           <button type="button" class="lang__btn" data-lang="en" aria-pressed="false">EN</button>
         </div>
-        <button type="button" class="icon-btn" id="theme-toggle" data-i18n-attr="aria-label:ui.themeToggle" aria-label="Alternar tema">
-          <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-          <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <button type="button" class="icon-btn" id="theme-toggle" data-i18n-attr="aria-label:ui.themeToggle" aria-label="Alternar entre dia e noite">
+          <span class="icon icon--moon" data-sprite="moon" data-scale="2"></span>
+          <span class="icon icon--sun" data-sprite="daysun" data-scale="2"></span>
         </button>
       </div>
     </div>
@@ -58,14 +62,34 @@
   <main id="main">
     <!-- HERO -->
     <section class="hero" id="top">
+      <div class="sky" id="sky" aria-hidden="true"></div>
+
       <div class="container hero__inner">
-        <p class="eyebrow" data-i18n="hero.greeting">Olá, eu sou</p>
-        <h1 class="hero__name" data-site="name">Mauricio Aires</h1>
-        <p class="hero__role" data-i18n="hero.role">Desenvolvedor de Software</p>
-        <p class="hero__tagline" data-i18n="hero.tagline">Construo soluções simples e confiáveis para problemas reais.</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="#projects" data-i18n="hero.cta1">Ver projetos</a>
-          <a class="btn btn--ghost" href="#contact" data-i18n="hero.cta2">Entrar em contato</a>
+        <div class="hero__text">
+          <p class="eyebrow" data-i18n="hero.greeting">Olá, viajante! Eu sou</p>
+          <h1 class="hero__name" data-site="name">Mauricio Aires</h1>
+          <p class="hero__role" data-i18n="hero.role">Desenvolvedor de software · Artista pixel art · Gamedev</p>
+          <p class="hero__tagline" data-i18n="hero.tagline">Graduando em Ciência da Computação na UFPA.</p>
+
+          <div class="dialog" id="dialog" aria-live="polite">
+            <span class="dialog__soul" data-sprite="heart" data-scale="3"></span>
+            <div class="dialog__text" id="dialog-text"></div>
+            <span class="dialog__more" aria-hidden="true">▼</span>
+          </div>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#projects" data-i18n="hero.cta1">Ver projetos</a>
+            <a class="btn btn--ghost" href="#contact" data-i18n="hero.cta2">Entrar em contato</a>
+          </div>
+        </div>
+
+        <div class="avatar">
+          <div class="avatar__frame">
+            <img id="avatar-img" width="260" height="260" alt="Foto de Mauricio Aires" data-i18n-attr="alt:hero.photoAlt">
+          </div>
+          <span class="deco deco--planet" data-sprite="planet" data-scale="6"></span>
+          <span class="deco deco--flower" data-sprite="sunflower" data-scale="5"></span>
+          <span class="deco deco--creeper" data-sprite="creeper" data-scale="5"></span>
         </div>
       </div>
     </section>
@@ -73,37 +97,43 @@
     <!-- SOBRE -->
     <section class="section" id="about">
       <div class="container">
-        <h2 class="section__title" data-i18n="about.title">Sobre</h2>
-        <p class="about__text" data-i18n="about.text"></p>
+        <h2 class="section__title"><span class="section__num">01</span><span data-i18n="about.title">Sobre</span></h2>
+        <div class="about">
+          <p class="about__text" data-i18n="about.text"></p>
+          <dl class="stats" id="stats"></dl>
+        </div>
       </div>
     </section>
 
-    <!-- LINGUAGENS E TECNOLOGIAS -->
+    <!-- LINGUAGENS -->
     <section class="section section--alt" id="tech">
       <div class="container">
-        <h2 class="section__title" data-i18n="tech.title">Linguagens</h2>
-        <div class="tech" id="tech-list"></div>
+        <h2 class="section__title"><span class="section__num">02</span><span data-i18n="tech.title">Linguagens</span></h2>
+        <p class="hint" data-i18n="tech.hint"></p>
+        <ul class="hotbar" id="tech-list"></ul>
       </div>
     </section>
 
     <!-- PROJETOS -->
     <section class="section" id="projects">
       <div class="container">
-        <h2 class="section__title" data-i18n="projects.title">Projetos</h2>
-        <div class="grid grid--3" id="projects-list"></div>
+        <h2 class="section__title"><span class="section__num">03</span><span data-i18n="projects.title">Projetos</span></h2>
+        <div class="projects" id="projects-list"></div>
       </div>
     </section>
 
     <!-- CONTATO + PIX -->
-    <section class="section" id="contact">
+    <section class="section section--alt" id="contact">
       <div class="container contact">
         <div class="contact__info">
-          <h2 class="section__title" data-i18n="contact.title">Contato</h2>
-          <p data-i18n="contact.text"></p>
-          <ul class="contact__links" id="contact-links"></ul>
+          <h2 class="section__title"><span class="section__num">04</span><span data-i18n="contact.title">Contato</span></h2>
+          <p class="contact__text" data-i18n="contact.text"></p>
+          <ul class="menu" id="contact-links"></ul>
+          <span class="deco-inline" data-sprite="campfire" data-scale="6"></span>
         </div>
 
         <aside class="pix" aria-labelledby="pix-title">
+          <span class="pix__sun" data-sprite="sun" data-scale="5"></span>
           <h3 id="pix-title" data-i18n="contact.pixTitle">Apoie meu trabalho</h3>
           <p class="pix__text" data-i18n="contact.pixText"></p>
           <img class="pix__qr" id="pix-qr" width="200" height="200" alt="QR Code Pix" data-i18n-attr="alt:contact.pixAlt">
@@ -113,11 +143,14 @@
   </main>
 
   <footer class="footer">
+    <span class="footer__deco footer__deco--flower" data-sprite="sunflower" data-scale="5"></span>
+    <span class="footer__deco footer__deco--creeper" data-sprite="creeper" data-scale="5"></span>
     <div class="container">
-      <small>© <span id="year"></span> <span data-site="name">Mauricio Aires</span> · <span data-i18n="footer.text">Feito com HTML, CSS e JS.</span></small>
+      <small class="footer__text">© <span id="year"></span> <span data-site="name">Mauricio Aires</span> · <span data-i18n="footer.text">Feito com HTML, CSS e JS.</span></small>
     </div>
   </footer>
 
+  <script src="js/sprites.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
 </body>

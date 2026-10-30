@@ -7,6 +7,9 @@ const SITE = {
   name: "Mauricio Aires",
   shortName: "Mauricio",
 
+  // Foto: usa o avatar do GitHub, então ao trocar a foto lá ela muda aqui também.
+  avatar: "https://github.com/mauricioaires30.png?size=360",
+
   // QR Code Pix: salve a imagem do seu QR neste caminho
   pixQr: "assets/pix-qr.png",
 
@@ -17,17 +20,22 @@ const SITE = {
     { key: "github",    label: "GitHub",    value: "github.com/mauricioaires30", href: "https://github.com/mauricioaires30" }
   ],
 
-  // Linguagens (nomes não são traduzidos; o título do grupo está em I18N)
+  // Linguagens: abbr é o texto curto exibido no "slot" da hotbar
   tech: [
-    { key: "languages", items: ["Python", "Java", "GML", "GDScript", "JavaScript", "TypeScript"] }
+    { name: "Python",     abbr: "PY" },
+    { name: "Java",       abbr: "JV" },
+    { name: "GML",        abbr: "GM" },
+    { name: "GDScript",   abbr: "GD" },
+    { name: "JavaScript", abbr: "JS" },
+    { name: "TypeScript", abbr: "TS" }
   ],
 
   // Projetos: dados fixos (textos ficam em I18N.<lang>.projects.items, na MESMA ordem)
   projects: [
-    { stack: ["Kotlin", "Jetpack Compose"], repo: "https://github.com/mauricioaires30/TruePlayer", demo: "" },
-    { stack: ["SaaS", "Web"], repo: "", demo: "https://www.r1academy.app/landingpage" },
-    { stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
-    { stack: ["Godot", "Pixel art"], repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
+    { icon: "note",      stack: ["Kotlin", "Jetpack Compose"], repo: "https://github.com/mauricioaires30/TruePlayer", demo: "" },
+    { icon: "cross",     stack: ["SaaS", "Web"],               repo: "", demo: "https://www.r1academy.app/landingpage" },
+    { icon: "container", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
+    { icon: "leaf",      stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" }
   ]
 };
 
@@ -39,25 +47,43 @@ const I18N = {
       title: "Mauricio Aires — Portfólio",
       description: "Desenvolvedor de software, artista pixel art e gamedev. Graduando em Ciência da Computação na UFPA."
     },
-    ui: { skip: "Ir para o conteúdo", themeToggle: "Alternar tema claro/escuro" },
+    ui: {
+      skip: "Ir para o conteúdo",
+      themeToggle: "Alternar entre dia e noite",
+      sun: "Sóis coletados",
+      sunDrop: "Coletar sol"
+    },
     nav: { about: "Sobre", tech: "Linguagens", projects: "Projetos", contact: "Contato" },
     hero: {
-      greeting: "Olá, eu sou",
+      greeting: "Olá, viajante! Eu sou",
       role: "Desenvolvedor de software · Artista pixel art · Gamedev",
       tagline: "Graduando em Ciência da Computação na UFPA.",
+      dialog: [
+        "* Você encontrou o portfólio do Mauricio.",
+        "* Aqui tem jogos, software e muita pixel art.",
+        "* Isso te enche de determinação."
+      ],
       cta1: "Ver projetos",
-      cta2: "Entrar em contato"
+      cta2: "Entrar em contato",
+      photoAlt: "Foto de Mauricio Aires"
     },
     about: {
       title: "Sobre",
-      text: "Sou graduando em Ciência da Computação na Universidade Federal do Pará (UFPA). Desenvolvo software e jogos e também crio a arte em pixel art dos meus projetos, então costumo cuidar tanto do código quanto do visual."
+      text: "Sou graduando em Ciência da Computação na Universidade Federal do Pará (UFPA). Desenvolvo software e jogos e também crio a arte em pixel art dos meus projetos, então costumo cuidar tanto do código quanto do visual.",
+      stats: [
+        { k: "NOME",   v: "Mauricio Aires" },
+        { k: "CLASSE", v: "Dev · Artista pixel art · Gamedev" },
+        { k: "NÍVEL",  v: "Graduando em Ciência da Computação" },
+        { k: "GUILDA", v: "UFPA · Laboratório SPIDER" }
+      ]
     },
     tech: {
       title: "Linguagens",
-      labels: { languages: "Linguagens" }
+      hint: "Meu inventário de linguagens."
     },
     projects: {
       title: "Projetos",
+      phase: "FASE",
       role: "Meu papel",
       code: "Código",
       demo: "Ver projeto",
@@ -70,7 +96,7 @@ const I18N = {
     },
     contact: {
       title: "Contato",
-      text: "Vamos conversar? Me chame por qualquer um dos canais abaixo.",
+      text: "Vamos conversar? Escolha uma opção abaixo.",
       pixTitle: "Apoie meu trabalho",
       pixText: "Se algum projeto meu te ajudou, você pode contribuir via Pix. Qualquer valor é bem-vindo!",
       pixAlt: "QR Code Pix para apoiar o trabalho"
@@ -84,25 +110,43 @@ const I18N = {
       title: "Mauricio Aires — Portfolio",
       description: "Software developer, pixel artist and game developer. Computer Science student at UFPA."
     },
-    ui: { skip: "Skip to content", themeToggle: "Toggle light/dark theme" },
+    ui: {
+      skip: "Skip to content",
+      themeToggle: "Switch between day and night",
+      sun: "Suns collected",
+      sunDrop: "Collect sun"
+    },
     nav: { about: "About", tech: "Languages", projects: "Projects", contact: "Contact" },
     hero: {
-      greeting: "Hi, I'm",
+      greeting: "Hello, traveler! I'm",
       role: "Software developer · Pixel artist · Game developer",
       tagline: "Computer Science student at UFPA.",
+      dialog: [
+        "* You found Mauricio's portfolio.",
+        "* There are games, software and lots of pixel art here.",
+        "* It fills you with determination."
+      ],
       cta1: "View projects",
-      cta2: "Get in touch"
+      cta2: "Get in touch",
+      photoAlt: "Photo of Mauricio Aires"
     },
     about: {
       title: "About",
-      text: "I'm a Computer Science student at the Federal University of Pará (UFPA). I build software and games and also draw the pixel art for my projects, so I usually handle both the code and the visuals."
+      text: "I'm a Computer Science student at the Federal University of Pará (UFPA). I build software and games and also draw the pixel art for my projects, so I usually handle both the code and the visuals.",
+      stats: [
+        { k: "NAME",  v: "Mauricio Aires" },
+        { k: "CLASS", v: "Dev · Pixel artist · Game dev" },
+        { k: "LEVEL", v: "Computer Science student" },
+        { k: "GUILD", v: "UFPA · SPIDER Lab" }
+      ]
     },
     tech: {
       title: "Languages",
-      labels: { languages: "Languages" }
+      hint: "My language inventory."
     },
     projects: {
       title: "Projects",
+      phase: "STAGE",
       role: "My role",
       code: "Code",
       demo: "View project",
@@ -115,7 +159,7 @@ const I18N = {
     },
     contact: {
       title: "Contact",
-      text: "Let's talk! Reach out through any of the channels below.",
+      text: "Let's talk! Pick an option below.",
       pixTitle: "Support my work",
       pixText: "If any of my projects helped you, you can contribute via Pix (Brazilian instant payment). Any amount is appreciated!",
       pixAlt: "Pix QR Code to support the work"
