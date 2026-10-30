@@ -222,7 +222,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   background: #05060f; border: 4px solid var(--line);
   box-shadow: 6px 10px 0 0 var(--shadow);
 }
-.eye__frame img { width: 100%; height: 100%; object-fit: cover; }
+.eye__frame { display: grid; place-items: center; }
+.eye__frame img { width: 86%; height: auto; object-fit: contain; }
 
 .stats {
   margin: 4px; padding: 1.1rem 1.2rem; background: #000; color: #fff; font-family: var(--dialog); font-size: 1.5rem; line-height: 1.2;
@@ -301,6 +302,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .project__head { display: flex; align-items: center; gap: 1rem; }
 .project__icon { display: grid; place-items: center; width: 64px; height: 64px; background: var(--bg-alt);
   box-shadow: 0 -3px 0 0 var(--b), 0 3px 0 0 var(--b), -3px 0 0 0 var(--b), 3px 0 0 0 var(--b); margin: 3px; }
+.project__icon .sprite svg { width: 52px; height: auto; }
 .project__phase { font-family: var(--label); font-size: .6rem; color: var(--accent); }
 .project h3 { font-family: var(--display); font-size: 1.7rem; line-height: 1.1; margin-top: .3rem; }
 .project__role { font-family: var(--dialog); font-size: 1.35rem; line-height: 1.1; color: var(--accent); }
@@ -336,9 +338,23 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 5px rgba(0, 0, 0, .4));
 }
 .decor-item--face img { filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .35)); }
+/* Órbita: um plano inclinado e achatado onde o satélite gira; ele é "desinclinado" para continuar de pé */
+.orbit { position: absolute; width: 0; height: 0; transform: rotate(var(--tilt)) scaleY(var(--flat)); }
+.orbit__spin { position: absolute; left: 0; top: 0; width: 0; height: 0; animation: orbit-spin var(--dur) linear infinite; }
+.orbit__sat { position: absolute; left: var(--radius); top: 0; line-height: 0; display: block;
+  animation: orbit-unspin var(--dur) linear infinite; }
+.orbit__sat img { display: block; max-width: none; }
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+@keyframes orbit-unspin {
+  from { transform: rotate(0deg) scaleY(var(--inv)) rotate(calc(var(--tilt) * -1)) translate(-50%, -50%); }
+  to   { transform: rotate(-360deg) scaleY(var(--inv)) rotate(calc(var(--tilt) * -1)) translate(-50%, -50%); }
+}
+.quantum { position: absolute; z-index: 0; line-height: 0; pointer-events: none; }
+.quantum img { display: block; max-width: none; }
 .traffic { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .traffic__item { position: absolute; left: 0; top: 0; line-height: 0; will-change: transform; }
 .traffic__item img { display: block; max-width: none; }
+.trail { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform, opacity; }
 
 .pix {
   position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .9rem;
@@ -370,7 +386,15 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 /* ============ Cena de PvZ sobre os blocos de grama ============ */
 .lawn { position: relative; z-index: 2; height: 190px; margin: 2.5rem 0 -14px; overflow: hidden; pointer-events: none; }
 .lawn img { display: block; max-width: none; }
-.pvz-shooter { position: absolute; left: 8px; bottom: 0; }
+.pvz-shooter {
+  position: absolute; left: 8px; bottom: 0;
+  background: url("../assets/games/pvz-peashooter-sheet.webp") 0 0 / calc(var(--frames) * var(--fw)) var(--fh) no-repeat;
+}
+/* ervilheira: parada (quadros 40 a 59, em ciclo) e atirando (os 60 quadros, uma vez por tiro) */
+.pvz-shooter.is-idle { animation: pea-idle 1.1s steps(20) infinite; }
+.pvz-shooter.is-shooting { animation: pea-shoot var(--cycle) steps(60); }
+@keyframes pea-idle { from { background-position-x: calc(var(--fw) * -40); } to { background-position-x: calc(var(--fw) * -60); } }
+@keyframes pea-shoot { from { background-position-x: 0; } to { background-position-x: calc(var(--fw) * -60); } }
 .pvz-zombie { position: absolute; left: 0; bottom: 0; will-change: transform; }
 .pvz-pea { position: absolute; left: 0; will-change: transform; }
 .pvz-hit { filter: brightness(1.8); }
@@ -412,6 +436,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .traffic { display: none; }
   .lawn { display: none; }
+  .orbit__spin, .orbit__sat { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .sky__cloud { left: auto; }

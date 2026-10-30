@@ -1,6 +1,6 @@
 /* =====================================================================
  * Pixel art em código (ícones dos projetos, itens do inventário, céu…).
- * A arte dos jogos (Minecraft, Outer Wilds, PvZ, Undertale) fica em
+ * A arte dos jogos (Minecraft, Outer Wilds, PvZ, Deltarune, Terraria) fica em
  * assets/games e é listada em GAME_ART, no fim deste arquivo.
  * Cada sprite é uma grade de caracteres:
  * "." = transparente, qualquer outra letra aponta para a paleta (pal).
@@ -93,18 +93,38 @@ const SPRITES = {
       "BBBBBBBYYYYYYY"
     ]
   },
-  /* Flor da vitoria-regia (Victoria amazonica), so a flor */
+  /* Flor da vitoria-regia vista de cima (icone do Tekoha), com uma folha no canto */
   victoria: {
-    pal: { P: "#f06aa8", p: "#c2297a", W: "#ffd6e8" },
+    pal: { a: "#d93f8e", b: "#ef6fb0", c: "#ffa6d0", d: "#fff0f7", k: "#8f1d5e", g: "#c2297a", L: "#3f9a3a", l: "#2a6f2d" },
     outline: "#4a1530",
     rows: [
-      ".........P.........",
-      "........PPP........",
-      ".......PPpPP.......",
-      ".....PPPPpPPPP.....",
-      "...PPWWPPpPPWWPP...",
-      "..PWWWPPPpPPPWWWP..",
-      "..PPWWPPPPPPPWWPP.."
+      ".............a.............",
+      "............aaa............",
+      "............aaa............",
+      "......aaa..aakaa..aaa......",
+      ".....aaaaa.akbka.aaaaa.....",
+      ".....aaaaaakbbbkaaaaaa.....",
+      "......kkkkakbbbkakkkk......",
+      "......bbbbkbbbbbkbbbb......",
+      "...aaakbbkckkbkkckbbkaaa...",
+      ".aaaaakbbkccckccckbbkaaaaa.",
+      ".aaaaaakbkcckkkcckbkaaaaaa.",
+      "..aaakkbkccgdgdgcckbkkaaa..",
+      "...akbbkcckdgggdkcckbbka...",
+      "...kbbkccckggdggkccckbbk...",
+      "...akbbkcckdgggdkcckbbka...",
+      "..aaakkbkccgdgdgcckbkkaaa..",
+      ".aaaaaakbkcckkkcckbkaaaaaa.",
+      ".aaaaakbbkccckccckbbkaaaaa.",
+      "...aaakbbkckkbkkckbbkaaa...",
+      "Ll....bbbbkbbbbbkbbbb......",
+      "LLl...kkkkakbbbkakkkk......",
+      "LLLl.aaaaaakbbbkaaaaaa.....",
+      "LLLLlaaaaa.akbka.aaaaa.....",
+      "LLLLLlaaa..aakaa..aaa......",
+      "LLLLLLl.....aaa............",
+      "LLLLLLLl....aaa............",
+      "LLLLLLLL.....a............."
     ]
   }
 };
@@ -156,22 +176,30 @@ function spriteSVG(name, scale, palOverride, outlineOverride) {
 function art(file, w, h, pixel) { return { src: "assets/games/" + file, w: w, h: h, pixel: !!pixel }; }
 
 const GAME_ART = {
-  /* Undertale / Deltarune (sprites oficiais, pixel art) */
+  /* Deltarune (sprites oficiais, pixel art) e a SOUL, igual nos dois jogos do Toby Fox */
   soul:        art("ut-soul.png", 16, 16, true),
-  ut_sans:     art("ut-sans.png", 46, 60, true),
-  ut_papyrus:  art("ut-papyrus.png", 50, 84, true),
-  ut_flowey:   art("ut-flowey.png", 42, 42, true),
-  ut_toriel:   art("ut-toriel.png", 50, 104, true),
-  ut_dog:      art("ut-annoying-dog.webp", 44, 38, true),
   dr_kris:     art("dr-kris.png", 38, 74, true),
   dr_lancer:   art("dr-lancer.png", 60, 68, true),
   dr_ralsei:   art("dr-ralsei.png", 46, 86, true),
   dr_susie:    art("dr-susie.png", 50, 88, true),
   dr_spamton:  art("dr-spamton.webp", 64, 76, true),
+  dr_aqua:     art("dr-aqua.webp", 52, 68, true),
+  dr_rouxls:   art("dr-rouxls.png", 94, 114, true),
+  ut_sans:     art("ut-sans.webp", 74, 60, true),
+
+  /* Terraria */
+  tr_guide:    art("tr-guide.png", 26, 46, true),
+  tr_life:     art("tr-life-crystal.png", 32, 32, true),
+  tr_wizard:   art("tr-wizard.png", 34, 54, true),
+  tr_slime:    art("tr-blue-slime.png", 32, 22, true),
+  tr_star:     art("tr-fallen-star.webp", 22, 24, true),
+  tr_eoc:      art("tr-eye-of-cthulhu.webp", 140, 150, true),
+  tr_duke:     art("tr-duke-fishron.webp", 196, 144, true),
+  tr_wyvern:   art("tr-wyvern.png", 598, 58, true),
 
   /* Plants vs. Zombies */
   sun:         art("pvz-sun.png", 94, 97),
-  sunflower:   art("pvz-sunflower.png", 220, 248),
+  sunflower:   art("pvz-sunflower.webp", 171, 170),
   pvz_dave:    art("pvz-crazy-dave.png", 99, 240),
   pvz_wallnut: art("pvz-wall-nut.png", 170, 197),
 
@@ -181,6 +209,10 @@ const GAME_ART = {
   mc_face_zombie:   art("mc-face-zombie.png", 8, 8, true),
   mc_diamond:       art("mc-diamond.png", 16, 16, true),
   mc_cake:          art("mc-cake.png", 16, 16, true),
+  mc_totem:         art("mc-totem.png", 14, 15, true),
+  mc_gapple:        art("mc-golden-apple.png", 12, 14, true),
+  mc_pearl:         art("mc-ender-pearl.png", 13, 13, true),
+  mc_parrot:        art("mc-parrot.png", 233, 331),
 
   /* Outer Wilds: planetas (recortes do mapa planetario oficial), naves e cometa */
   ow_timber:     art("ow-timber-hearth.png", 130, 130),
@@ -191,8 +223,12 @@ const GAME_ART = {
   ow_bramble:    art("ow-dark-bramble.png", 200, 218),
   ow_twins:      art("ow-hourglass-twins.png", 70, 132),
   ow_quantum:    art("ow-quantum-moon.png", 52, 52),
-  ow_interloper: art("ow-interloper.png", 220, 90),
-  ow_stranger:   art("ow-stranger.png", 279, 360),
+  ow_interloper: art("ow-interloper.webp", 460, 397),
+  ow_stranger:   art("ow-stranger-log.webp", 380, 380),
+  ow_sun:        art("ow-sun.webp", 411, 420),
+  ow_station:    art("ow-sun-station.webp", 300, 300),
+  ow_cannon:     art("ow-probe-cannon.webp", 225, 260),
+  ow_eye_symbol: art("ow-eye-symbol.png", 400, 328),
   ow_ship:       art("ow-ship.png", 27, 26, true),
   ow_ventures:   art("ow-ventures.png", 160, 125),
   ow_eye:        art("ow-eye-of-the-universe.webp", 520, 520)

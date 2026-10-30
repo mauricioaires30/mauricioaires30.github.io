@@ -103,7 +103,7 @@ const I18N = {
     },
     footer: {
       text: "Feito com HTML, CSS e JS.",
-      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale e Deltarune © Toby Fox. Artes usadas como homenagem, num site pessoal sem fins comerciais."
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Deltarune © Toby Fox · Terraria © Re-Logic. Artes usadas como homenagem, num site pessoal sem fins comerciais."
     }
   },
 
@@ -166,7 +166,7 @@ const I18N = {
     },
     footer: {
       text: "Built with HTML, CSS and JS.",
-      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Undertale and Deltarune © Toby Fox. Art used as a tribute on a personal, non-commercial site."
+      credits: "Minecraft © Mojang · Outer Wilds © Mobius Digital · Plants vs. Zombies © PopCap/EA · Deltarune © Toby Fox · Terraria © Re-Logic. Art used as a tribute on a personal, non-commercial site."
     }
   }
 };

@@ -1,25 +1,36 @@
 /* =====================================================================
  * Cena do rodapé: uma ervilheira (Plants vs. Zombies) à esquerda atira em
  * zumbis que entram pela direita, em cima dos blocos de grama do Minecraft.
- * As animações são as oficiais do jogo (assets/games/pvz-*.webp); o código só
- * move os elementos. A ervilheira sempre vence: os zumbis são devagar e ainda
- * existe uma linha de segurança que derruba qualquer um que chegue perto.
+ * As animações são as oficiais do jogo (assets/games/pvz-*.webp):
+ *   - zumbis andando (ciclo de caminhada) e, ao morrer, a animação de morte;
+ *   - a ervilheira atirando (folha de quadros, reiniciada a cada tiro).
+ * O código só move os elementos. A ervilheira sempre vence: os zumbis são
+ * devagar e ainda existe uma linha de segurança que derruba quem chegar perto.
  * ===================================================================== */
 var Lawn = (function () {
   'use strict';
 
   var DIR = 'assets/games/';
-  /* hp = tiros para derrubar; speed = px/s num palco de 1200px de largura */
+  /* hp = tiros para derrubar; speed = px/s num palco de 1200px de largura.
+   * dying = como morre: 'zombie' usa a animação de morte do zumbi comum (a cabeça cai e o
+   * corpo desaba); o Gargantuar tem a animação de morte dele. */
   var TYPES = {
-    zombie:     { src: 'pvz-zombie.webp',     w: 73,  h: 123, hp: 4,  speed: 24 },
-    cone:       { src: 'pvz-conehead.webp',   w: 73,  h: 141, hp: 7,  speed: 22 },
-    bucket:     { src: 'pvz-buckethead.webp', w: 78,  h: 139, hp: 10, speed: 20 },
-    football:   { src: 'pvz-football.webp',   w: 122, h: 139, hp: 9,  speed: 42 },
-    gargantuar: { src: 'pvz-gargantuar.webp', w: 148, h: 176, hp: 30, speed: 15, boss: true, die: 'pvz-gargantuar_die.webp', dieMs: 2300 }
+    zombie:     { src: 'pvz-zombie.webp',     w: 82,  h: 123, hp: 4,  speed: 26 },
+    cone:       { src: 'pvz-conehead.webp',   w: 84,  h: 141, hp: 7,  speed: 24 },
+    bucket:     { src: 'pvz-buckethead.webp', w: 81,  h: 139, hp: 10, speed: 22 },
+    football:   { src: 'pvz-football.webp',   w: 132, h: 139, hp: 9,  speed: 58 },
+    gargantuar: { src: 'pvz-gargantuar.webp', w: 148, h: 176, hp: 30, speed: 17, boss: true,
+                  die: 'pvz-gargantuar_die.webp', dieW: 307, dieH: 210, dieMs: 2400 }
   };
+  /* animação de morte do zumbi comum: 41 quadros, ~2,9 s; o quadro dela é maior que o da caminhada */
+  var ZOMBIE_DIE = { src: 'pvz-zombie_die.webp', w: 117, h: 130, leftPad: 35, bottomPad: 7, ms: 2870, ref: 82 };
   var COMMON = ['zombie', 'zombie', 'cone', 'cone', 'bucket', 'football'];
-  var SHOOT_EVERY = 0.9;        // segundos entre tiros
-  var PEA_SPEED = 430;          // px/s
+
+  var SHOOT_EVERY = 1.0;          // segundos entre tiros
+  var PEA_SPEED = 430;            // px/s
+  var SHEET_FRAMES = 60;          // quadros da folha da ervilheira (cada um com 104 x 99 px)
+  var FRAME_W = 104, FRAME_H = 99;
+  var PEA_AT = 0.13;              // fração do ciclo em que a ervilha sai do cano
 
   function init() {
     var lawn = document.getElementById('lawn');
@@ -27,7 +38,7 @@ var Lawn = (function () {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { lawn.hidden = true; return; }
 
     var W = 0, k = 1, speedK = 1;
-    var shooter, shooterW = 100, shooterH = 103;
+    var shooter;
     var zombies = [], peas = [];
     var running = false, raf = 0, last = 0, fireAcc = 0, spawnIn = 1.4, spawned = 0;
 
@@ -39,12 +50,24 @@ var Lawn = (function () {
 
     function setup() {
       measure();
-      shooter = document.createElement('img');
-      shooter.className = 'pvz-shooter';
-      shooter.src = DIR + 'pvz-peashooter.webp';
-      shooter.alt = '';
-      shooter.style.width = Math.round(shooterW * k) + 'px';
+      shooter = document.createElement('div');
+      shooter.className = 'pvz-shooter is-idle';
+      shooter.style.width = Math.round(FRAME_W * k) + 'px';
+      shooter.style.height = Math.round(FRAME_H * k) + 'px';
+      shooter.style.setProperty('--fw', Math.round(FRAME_W * k) + 'px');
+      shooter.style.setProperty('--fh', Math.round(FRAME_H * k) + 'px');
+      shooter.style.setProperty('--frames', SHEET_FRAMES);
+      shooter.style.setProperty('--cycle', (SHOOT_EVERY * 0.95) + 's');
       lawn.appendChild(shooter);
+    }
+
+    /* Reinicia a animação de tiro da ervilheira (a ervilha sai um pouco depois, quando o cano dispara) */
+    function playShot() {
+      shooter.classList.remove('is-shooting', 'is-idle');
+      void shooter.offsetWidth;                         // força o reinício da animação
+      shooter.classList.add('is-shooting');
+      setTimeout(function () { if (running) launchPea(); }, SHOOT_EVERY * 0.95 * 1000 * PEA_AT);
+      setTimeout(function () { shooter.classList.remove('is-shooting'); shooter.classList.add('is-idle'); }, SHOOT_EVERY * 0.95 * 1000);
     }
 
     function spawn(name) {
@@ -63,15 +86,21 @@ var Lawn = (function () {
 
     function die(z) {
       z.dying = true;
+      var img = z.img, box = z.box;
+      // a animação de morte ocupa um quadro diferente do da caminhada: alinha pelo pé e pela esquerda
       if (z.t.die) {
-        z.img.src = DIR + z.t.die;                       // animação oficial de morte do Gargantuar
-        z.img.style.width = Math.round(307 * 0.95 * k) + 'px';
-        z.box.style.marginLeft = Math.round(-z.w * 0.6) + 'px';
-        setTimeout(function () { z.img.classList.add('pvz-fade'); }, z.t.dieMs - 500);
-        setTimeout(function () { z.box.remove(); }, z.t.dieMs + 300);
+        img.src = DIR + z.t.die;
+        img.style.width = Math.round(z.t.dieW * 0.8 * k) + 'px';
+        box.style.marginLeft = Math.round(-z.w * 0.35) + 'px';
+        setTimeout(function () { img.classList.add('pvz-fade'); }, z.t.dieMs - 500);
+        setTimeout(function () { box.remove(); }, z.t.dieMs + 300);
       } else {
-        z.img.classList.add('pvz-fall');                 // queda simples (sem animação de morte oficial)
-        setTimeout(function () { z.box.remove(); }, 800);
+        img.src = DIR + ZOMBIE_DIE.src;                 // zumbi comum (e os de capacete): perde a cabeça e desaba
+        img.style.width = Math.round(ZOMBIE_DIE.w * k) + 'px';
+        box.style.marginLeft = Math.round(-ZOMBIE_DIE.leftPad * k) + 'px';
+        box.style.marginBottom = Math.round(-ZOMBIE_DIE.bottomPad * k) + 'px';
+        setTimeout(function () { img.classList.add('pvz-fade'); }, ZOMBIE_DIE.ms - 500);
+        setTimeout(function () { box.remove(); }, ZOMBIE_DIE.ms + 300);
       }
     }
 
@@ -81,13 +110,13 @@ var Lawn = (function () {
       return best;
     }
 
-    function shoot() {
+    function launchPea() {
       var p = document.createElement('img');
       p.className = 'pvz-pea'; p.alt = ''; p.src = DIR + 'pvz-pea.png';
       var size = Math.round(24 * k);
       p.style.width = size + 'px';
-      var x = 8 + shooterW * k * 0.78;
-      p.style.bottom = Math.round(shooterH * k * 0.58) + 'px';
+      var x = 8 + FRAME_W * k * 0.8;
+      p.style.bottom = Math.round(FRAME_H * k * 0.6) + 'px';
       p.style.transform = 'translate3d(' + x + 'px,0,0)';
       lawn.appendChild(p);
       peas.push({ el: p, x: x });
@@ -109,18 +138,18 @@ var Lawn = (function () {
       }
 
       // zumbis andando (+ linha de segurança: nenhum chega perto da ervilheira)
-      var safeX = 8 + shooterW * k + 40;
+      var safeX = 8 + FRAME_W * k + 40;
       alive.forEach(function (z) {
         z.x -= z.t.speed * speedK * dt;
         z.box.style.transform = 'translate3d(' + z.x + 'px,0,0)';
         if (z.x < safeX) die(z);
       });
 
-      // tiros
+      // tiros: a ervilheira só atira quando há zumbi na frente
       var target = frontZombie();
       if (target) {
         fireAcc += dt;
-        if (fireAcc >= SHOOT_EVERY) { fireAcc = 0; shoot(); }
+        if (fireAcc >= SHOOT_EVERY) { fireAcc = 0; playShot(); }
       } else {
         fireAcc = SHOOT_EVERY * 0.6;
       }
