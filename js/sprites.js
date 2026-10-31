@@ -195,7 +195,7 @@ const GAME_ART = {
 
   /* Plants vs. Zombies */
   sun:         art("pvz-sun.png", 94, 97),
-  sunflower:   art("pvz-sunflower.webp", 171, 170),
+  sunflower:   art("pvz2-sunflower.webp", 201, 218),
   pvz_wallnut: art("pvz-wall-nut.png", 170, 197),
 
   /* Minecraft: so a frente das cabecas dos mobs e alguns itens */
@@ -217,7 +217,7 @@ const GAME_ART = {
   ow_bramble   : art("ow-dark-bramble.png", 241, 263),
   ow_twins     : art("ow-hourglass-twins.png", 68, 128),
   ow_quantum   : art("ow-quantum-moon.png", 58, 58),
-  ow_interloper: art("map-interloper.png", 336, 187),
+  ow_interloper: art("map-interloper.png", 336, 220),
   ow_stranger:   art("ow-stranger.png", 227, 231),
   ow_sun       : art("map-sun.png", 343, 342),
   ow_station   : art("map-sun-station.png", 90, 63),

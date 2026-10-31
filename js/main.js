@@ -83,23 +83,6 @@
     });
   })();
 
-  /* ---------- Tema ---------- */
-  function setTheme(theme) {
-    root.setAttribute('data-theme', theme);
-    store.set('theme', theme);
-  }
-
-  document.getElementById('theme-toggle').addEventListener('click', function () {
-    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  });
-
-  // Segue o sistema enquanto o usuário não escolheu manualmente
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-      if (!store.get('theme')) root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-    });
-  }
-
   /* ---------- Idioma ---------- */
   function detectLang() {
     var saved = store.get('lang');

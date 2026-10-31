@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,17 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!-- Aplica o tema antes da renderização para evitar "flash" -->
-  <script>
-    (function () {
-      var theme = null;
-      try { theme = localStorage.getItem('theme'); } catch (e) {}
-      if (!theme) {
-        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      document.documentElement.setAttribute('data-theme', theme);
-    })();
-  </script>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="ui.skip">Ir para o conteúdo</a>
@@ -47,10 +36,6 @@
           <button type="button" class="lang__btn" data-lang="pt" aria-pressed="true">PT</button>
           <button type="button" class="lang__btn" data-lang="en" aria-pressed="false">EN</button>
         </div>
-        <button type="button" class="icon-btn" id="theme-toggle" data-i18n-attr="aria-label:ui.themeToggle" aria-label="Alternar entre dia e noite">
-          <span class="icon icon--moon" data-sprite="moon" data-scale="2"></span>
-          <span class="icon icon--sun" data-sprite="daysun" data-scale="2"></span>
-        </button>
       </div>
     </div>
   </header>
@@ -83,7 +68,7 @@
           <div class="avatar__frame">
             <img id="avatar-img" width="260" height="260" alt="Foto de Mauricio Aires" data-i18n-attr="alt:hero.photoAlt">
           </div>
-          <span class="deco deco--flower" data-sprite="sunflower" data-scale="0.8"></span>
+          <span class="deco deco--flower" data-sprite="sunflower" data-scale="0.46"></span>
         </div>
       </div>
     </section>

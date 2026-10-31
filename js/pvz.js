@@ -73,8 +73,7 @@ var Lawn = (function () {
       shooter.src = DIR + 'pvz2-peashooter-idle.webp';
       shooter.style.width = shooterW + 'px';
       lawn.appendChild(shooter);
-      // pré-carrega a animação de tiro
-      new Image().src = DIR + 'pvz2-peashooter-shoot.webp';
+      preload();
     }
 
     /* Toca a animação de tiro (um <img> novo para ela começar do primeiro quadro) e solta a ervilha na hora do cuspe */
@@ -86,15 +85,33 @@ var Lawn = (function () {
       img.className = 'pvz-shooter'; img.alt = '';
       img.src = DIR + 'pvz2-peashooter-shoot.webp';
       img.style.width = shooterW + 'px';
-      shooter.replaceWith(img); shooter = img;
-      setTimeout(function () { if (running) launchPea(); }, PEA_OUT_MS);
+      var old = shooter; shooter = img;
+      swapWhenReady(old, img, function () {
+        setTimeout(function () { if (running) launchPea(); }, PEA_OUT_MS);
+      });
       setTimeout(function () {
         var idle = document.createElement('img');
         idle.className = 'pvz-shooter'; idle.alt = '';
         idle.src = DIR + 'pvz2-peashooter-idle.webp';
         idle.style.width = shooterW + 'px';
-        shooter.replaceWith(idle); shooter = idle; shooting = false;
+        var cur = shooter; shooter = idle;
+        swapWhenReady(cur, idle, function () { shooting = false; });
       }, SHOOT_MS);
+    }
+
+    /* Troca uma imagem pela outra só depois que a nova já está pronta para desenhar,
+     * para não aparecer um quadro vazio (o "pisca") no meio da troca. */
+    function swapWhenReady(oldImg, newImg, done) {
+      var go = function () { if (oldImg.isConnected) oldImg.replaceWith(newImg); if (done) done(); };
+      if (newImg.decode) newImg.decode().then(go, go); else newImg.onload = go;
+    }
+
+    /* Carrega todas as animações de uma vez no começo, para as trocas serem instantâneas */
+    function preload() {
+      Object.keys(G).forEach(function (n) { new Image().src = DIR + G[n].f; });
+      new Image().src = DIR + HEAD.f;
+      new Image().src = DIR + 'pvz2-peashooter-shoot.webp';
+      new Image().src = DIR + 'pvz2-peashooter-idle.webp';
     }
 
     /* Mostra a animação `name` no zumbi: um <img> novo, para o GIF recomeçar do primeiro quadro */
@@ -106,8 +123,9 @@ var Lawn = (function () {
       // pés no chão e frente do desenho sobre a posição do zumbi
       img.style.marginBottom = '-' + Math.round((a.h - a.box[3]) * s) + 'px';
       img.style.marginLeft = '-' + Math.round(a.box[0] * s) + 'px';
-      z.box.replaceChildren(img);
+      var old = z.img;
       z.img = img; z.anim = name;
+      if (old && old.isConnected) swapWhenReady(old, img); else z.box.replaceChildren(img);
     }
 
     function stageFor(z) {

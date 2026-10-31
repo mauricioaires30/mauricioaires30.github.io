@@ -51,8 +51,7 @@ const I18N = {
       description: "Desenvolvedor de software, artista pixel art e gamedev. Graduando em Ciência da Computação na UFPA."
     },
     ui: {
-      skip: "Ir para o conteúdo",
-      themeToggle: "Alternar entre dia e noite"
+      skip: "Ir para o conteúdo"
     },
     nav: { about: "Sobre", tech: "Linguagens", projects: "Projetos", contact: "Contato" },
     hero: {
@@ -112,8 +111,7 @@ const I18N = {
       description: "Software developer, pixel artist and game developer. Computer Science student at UFPA."
     },
     ui: {
-      skip: "Skip to content",
-      themeToggle: "Switch between day and night"
+      skip: "Skip to content"
     },
     nav: { about: "About", tech: "Languages", projects: "Projects", contact: "Contact" },
     hero: {

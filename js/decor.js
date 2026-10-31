@@ -26,38 +26,39 @@ var Decor = (function () {
 
   /* Astros com lua ou satélite girando em volta.
    *   sat.h = altura do satélite, radius = raio da órbita (px), dur = segundos por volta,
-   *   tilt = inclinação da órbita (graus), flat = achatamento (1 = círculo),
-   *   face = giro da arte para a mesma face ficar sempre virada para o planeta, como no jogo. */
+   *   tilt = inclinação da órbita (graus), flat = achatamento (1 = círculo).
+   * O satélite fica sempre de pé e passa por trás do astro na metade de cima da órbita.
+   * Os astros giram devagar no próprio eixo (CSS: .decor-item--planet > img). */
   var ORBITS = [
-    { el: '.avatar', a: 'ow_timber',  x: 80, y: -6, h: 92, r: 0, m: true,
-      sat: { a: 'ow_attlerock', h: 34, radius: 78,  dur: 14, tilt: -20, flat: 0.62, face: 0 } },
+    { el: '.avatar', a: 'ow_timber',  x: 82, y: -8, h: 92,  r: 0, m: true,
+      sat: { a: 'ow_attlerock', h: 30, radius: 74,  dur: 16, tilt: -12, flat: 0.45 } },
     { s: 'top',  a: 'ow_giants',  x: 56, y: 6,  h: 110, r: 0,
-      sat: { a: 'ow_cannon',    h: 40, radius: 96,  dur: 18, tilt: -16, flat: 0.62, face: 200 } },
+      sat: { a: 'ow_cannon',    h: 34, radius: 94,  dur: 20, tilt: -10, flat: 0.45 } },
     { s: 'tech', a: 'ow_brittle', x: 86, y: 12, h: 120, r: 0,
-      sat: { a: 'ow_lantern',   h: 46, radius: 100, dur: 16, tilt: 18,  flat: 0.64, face: 0 } },
+      sat: { a: 'ow_lantern',   h: 40, radius: 96,  dur: 18, tilt: 10,  flat: 0.45 } },
     { s: 'tech', a: 'ow_sun',     x: 6,  y: 40, h: 150, r: 0,
-      sat: { a: 'ow_station',   h: 30, radius: 122, dur: 24, tilt: 12,  flat: 0.66, face: 180 } }
+      sat: { a: 'ow_station',   h: 28, radius: 118, dur: 26, tilt: 8,   flat: 0.45 } }
   ];
 
   /* Adesivos "segurando" as caixas da página (borda branca de adesivo) */
   var STICKERS = [
-    { el: '.dialog',                              a: 'tr_guide',    x: 96,  y: -48, h: 84,  r: -4 },
-    { el: '.stats',                               a: 'dr_ralsei',   x: 88,  y: -58, h: 110, r: 6 },
+    { el: '.dialog',                              a: 'tr_guide',    x: 94,  y: -50, h: 84,  r: -4 },
+    { el: '.stats',                               a: 'dr_ralsei',   x: 86,  y: -60, h: 110, r: 6 },
     { el: '.hotbar-wrap',                         a: 'tr_slime',    x: 58,  y: 8,   h: 40,  r: 0 },
-    { el: '#projects-list .project:nth-child(1)', a: 'dr_kris',     x: 84,  y: -30, h: 96,  r: 0, m: true },
-    { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   x: -10, y: 70,  h: 80,  r: -8 },
-    { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  x: 90,  y: 60,  h: 96,  r: 6 },
-    { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     x: 86,  y: -34, h: 104, r: 0, m: true },
+    { el: '#projects-list .project:nth-child(1)', a: 'dr_kris',     x: 80,  y: -32, h: 96,  r: 0, m: true },
+    { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   x: 50,  y: -28, h: 76,  r: 6 },
+    { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  x: -16, y: 52,  h: 90,  r: -6 },
+    { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     x: 70,  y: -30, h: 100, r: 0, m: true },
     { el: '.pix',                                 a: 'pvz_wallnut', x: -14, y: 74,  h: 80,  r: -8 },
-    { el: '#contact-links',                       a: 'mc_diamond',  x: 96,  y: -6,  h: 40,  r: -10 },
-    { el: '#contact-links',                       a: 'mc_cake',     x: 92,  y: 92,  h: 50,  r: 6 }
+    { el: '#contact-links',                       a: 'mc_diamond',  x: 96,  y: -10, h: 40,  r: -10 },
+    { el: '.pix',                                 a: 'mc_cake',     x: 84,  y: 92,  h: 50,  r: 6 }
   ];
 
   /* Rostos de mobs do Minecraft espiando atrás das caixas */
   var FACES = [
     { el: '.stats',          a: 'mc_face_creeper',  x: -10, y: 60, h: 46, r: -12 },
     { el: '.pix',            a: 'mc_face_zombie',   x: 94,  y: -8, h: 46, r: 10, m: true },
-    { el: '#projects-list',  a: 'mc_face_skeleton', x: 98,  y: 46, h: 46, r: 10 }
+    { el: '#projects-list',  a: 'mc_face_skeleton', x: 99,  y: 82, h: 46, r: 10 }
   ];
 
   /* Viajantes: atravessam a tela, 2 ou 3 ao mesmo tempo.
@@ -123,8 +124,8 @@ var Decor = (function () {
   }
 
   /* ---------- órbitas ----------
-   * O satélite é movido por código numa elipse inclinada ao redor do centro do astro e girado para a
-   * mesma face ficar sempre voltada para o planeta. Na metade de trás da órbita ele passa atrás do astro. */
+   * O satélite é movido por código numa elipse inclinada ao redor do centro do astro.
+   * Na metade de trás da órbita ele passa atrás do astro. */
   var orbiters = [];
 
   function addOrbits() {
@@ -148,8 +149,7 @@ var Decor = (function () {
     var ex = Math.cos(ang) * o.radius * k, ey = Math.sin(ang) * o.radius * k * o.flat;
     var tilt = o.tilt * Math.PI / 180;
     var x = ex * Math.cos(tilt) - ey * Math.sin(tilt), y = ex * Math.sin(tilt) + ey * Math.cos(tilt);
-    var facing = Math.atan2(y, x) * 180 / Math.PI + o.face;       // a face "o.face" aponta para o planeta
-    b.el.style.transform = 'translate(' + (b.cx + x - b.sw / 2).toFixed(1) + 'px,' + (b.cy + y - b.sh / 2).toFixed(1) + 'px) rotate(' + facing.toFixed(1) + 'deg)';
+    b.el.style.transform = 'translate(' + (b.cx + x - b.sw / 2).toFixed(1) + 'px,' + (b.cy + y - b.sh / 2).toFixed(1) + 'px)';
     b.el.style.zIndex = Math.sin(ang) < 0 ? -1 : 1;                 // atrás do astro na metade de cima
   }
 
