@@ -25,7 +25,7 @@
   --label: "Press Start 2P", "VT323", monospace;
 
   --px: 4px;                /* "espessura" do pixel das bordas */
-  --header-h: 68px;
+  --header-h: 0px;
   color-scheme: dark;
 }
 

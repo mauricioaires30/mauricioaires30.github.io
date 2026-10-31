@@ -84,9 +84,8 @@
   })();
 
   /* ---------- Idioma ---------- */
+  // o idioma segue o do navegador/sistema: português para pt-*, inglês para o resto
   function detectLang() {
-    var saved = store.get('lang');
-    if (saved && I18N[saved]) return saved;
     var nav = (navigator.language || '').toLowerCase();
     return nav.indexOf('pt') === 0 ? 'pt' : DEFAULT_LANG;
   }
@@ -249,7 +248,6 @@
     var t = I18N[lang];
     if (!t) return;
     var changed = lang !== currentLang;
-    store.set('lang', lang);
     root.lang = t.lang;
     document.title = t.meta.title;
     var desc = document.querySelector('meta[name="description"]');
@@ -266,10 +264,6 @@
       if (typeof v === 'string') node.setAttribute(parts[0], v);
     });
 
-    document.querySelectorAll('.lang__btn').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
-    });
-
     renderStats(t);
     renderProjects(t);
     if (changed) typeDialog(t.hero.dialog);
@@ -278,10 +272,6 @@
   }
 
   var currentLang = null;
-
-  document.querySelectorAll('.lang__btn').forEach(function (b) {
-    b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
-  });
 
   /* ---------- Conteúdo independente de idioma ---------- */
   document.querySelectorAll('[data-site]').forEach(function (node) {
