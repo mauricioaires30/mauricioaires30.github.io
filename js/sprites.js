@@ -220,7 +220,7 @@ const GAME_ART = {
   ow_interloper: art("map-interloper.png", 336, 220),
   ow_stranger:   art("ow-stranger.png", 227, 231),
   ow_sun       : art("map-sun.png", 343, 342),
-  ow_station   : art("map-sun-station.png", 90, 63),
+  ow_station   : art("ow-sun-station.png", 300, 202),
   ow_cannon    : art("ow-probe-cannon.png", 100, 77),
   ow_eye_symbol: art("ow-eye-symbol.png", 360, 360),
   ow_ship:       art("ow-ship.png", 27, 26, true),

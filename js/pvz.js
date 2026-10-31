@@ -46,7 +46,7 @@ var Lawn = (function () {
   var PEA_SPEED = 430;            // px/s
   /* Ervilheira do PvZ 2: parada (pvz2-peashooter-idle) e atirando (pvz2-peashooter-shoot),
    * as duas no mesmo quadro de 157 x 150 px; a ervilha sai do cano no quadro 33 de 60 (0,66 s). */
-  var SHOOTER_H = 110, SHOOTER_RATIO = 157 / 150, SHOOT_MS = 1200, PEA_OUT_MS = 660;
+  var SHOOTER_H = 82, SHOOTER_RATIO = 157 / 150, SHOOT_MS = 1200, PEA_OUT_MS = 660;
 
   function init() {
     var lawn = document.getElementById('lawn');

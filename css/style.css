@@ -335,8 +335,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .decor-item--held { z-index: 3; pointer-events: none; }
 .decor-item--planet.decor-item--held { z-index: -1; }
 /* planetas e sol girando devagar no próprio eixo */
-.decor-item--planet > img { animation: tspin 90s linear infinite; }
-.decor-item--planet:nth-of-type(2n) > img { animation-duration: 130s; animation-direction: reverse; }
+.decor-item--planet > img { animation: tspin 40s linear infinite; }
+.decor-item--planet:nth-of-type(2n) > img { animation-duration: 60s; animation-direction: reverse; }
 .decor-item--sticker img {
   filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 5px rgba(0, 0, 0, .4));
 }
@@ -364,7 +364,8 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
 /* ============ Rodapé (grama e terra) ============ */
 .footer {
-  position: relative; margin-top: 0; padding: 5.2rem 0 9rem; text-align: center;
+  position: relative; z-index: 3;   /* por cima dos viajantes que cruzam a tela */
+  margin-top: 0; padding: 5.2rem 0 9rem; text-align: center;
   /* 3 blocos de terra e pedra embaixo (texturas oficiais do Minecraft) */
   background-color: #7d7d7d; background-image: url("../assets/games/mc-dirt-3.png"), url("../assets/games/mc-stone.png");
   background-size: 64px 192px, 64px 64px; background-repeat: repeat-x, repeat; background-position: 0 64px, 0 0; image-rendering: pixelated;
@@ -394,6 +395,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @keyframes pvz-fall { to { transform: rotate(80deg) translateY(12px); opacity: 0; } }
 
 /* ============ Animações ============ */
+@keyframes tspin { to { transform: rotate(360deg); } }
 @keyframes bob { 50% { transform: translateY(-6px); } }
 @keyframes blink { 50% { opacity: 0; } }
 @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }

@@ -37,28 +37,32 @@ var Decor = (function () {
     { s: 'tech', a: 'ow_brittle', x: 86, y: 12, h: 120, r: 0,
       sat: { a: 'ow_lantern',   h: 40, radius: 96,  dur: 18, tilt: 10,  flat: 0.45 } },
     { s: 'tech', a: 'ow_sun',     x: 6,  y: 40, h: 150, r: 0,
-      sat: { a: 'ow_station',   h: 28, radius: 118, dur: 26, tilt: 8,   flat: 0.45 } }
+      sat: { a: 'ow_station',   h: 34, radius: 120, dur: 26, tilt: 8,   flat: 0.45 } }
   ];
 
-  /* Adesivos "segurando" as caixas da página (borda branca de adesivo) */
+  /* Adesivos "segurando" as caixas da página (borda branca de adesivo).
+   *   spots = lugares possíveis em volta da caixa, em ordem de preferência:
+   *     tr/tl = sentado na borda de cima (direita/esquerda), br/bl = na borda de baixo,
+   *     r/l = pendurado na lateral (direita/esquerda).
+   *   O código testa os lugares em ordem e usa o primeiro que não encosta em outro adesivo,
+   *   nem em enfeites fixos, nem sai da tela. */
   var STICKERS = [
-    { el: '.dialog',                              a: 'tr_guide',    x: 94,  y: -50, h: 84,  r: -4 },
-    { el: '.stats',                               a: 'dr_ralsei',   x: 86,  y: -60, h: 110, r: 6 },
-    { el: '.hotbar-wrap',                         a: 'tr_slime',    x: 58,  y: 8,   h: 40,  r: 0 },
-    { el: '#projects-list .project:nth-child(1)', a: 'dr_kris',     x: 80,  y: -32, h: 96,  r: 0, m: true },
-    { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   x: 50,  y: -28, h: 76,  r: 6 },
-    { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  x: -16, y: 52,  h: 90,  r: -6 },
-    { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     x: 70,  y: -30, h: 100, r: 0, m: true },
-    { el: '.pix',                                 a: 'pvz_wallnut', x: -14, y: 74,  h: 80,  r: -8 },
-    { el: '#contact-links',                       a: 'mc_diamond',  x: 96,  y: -10, h: 40,  r: -10 },
-    { el: '.pix',                                 a: 'mc_cake',     x: 84,  y: 92,  h: 50,  r: 6 }
+    { el: '.dialog',                              a: 'tr_guide',    h: 84,  spots: ['tr', 'r', 'tl'] },
+    { el: '.stats',                               a: 'dr_ralsei',   h: 104, spots: ['tl', 'bl', 'br'] },
+    { el: '#projects-list .project:nth-child(1)', a: 'dr_kris',     h: 92,  spots: ['tr', 'l'], m: true },
+    { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   h: 74,  spots: ['tr', 'r'] },
+    { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  h: 88,  spots: ['l', 'tl'] },
+    { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     h: 96,  spots: ['r', 'br', 'tr'], m: true },
+    { el: '.pix',                                 a: 'pvz_wallnut', h: 76,  spots: ['l', 'bl'] },
+    { el: '#contact-links',                       a: 'mc_diamond',  h: 38,  spots: ['tr', 'r'] },
+    { el: '.pix',                                 a: 'mc_cake',     h: 48,  spots: ['br', 'tr'] }
   ];
 
-  /* Rostos de mobs do Minecraft espiando atrás das caixas */
+  /* Rostos de mobs do Minecraft espiando atrás das caixas (mesmas regras dos adesivos) */
   var FACES = [
-    { el: '.stats',          a: 'mc_face_creeper',  x: -10, y: 60, h: 46, r: -12 },
-    { el: '.pix',            a: 'mc_face_zombie',   x: 94,  y: -8, h: 46, r: 10, m: true },
-    { el: '#projects-list',  a: 'mc_face_skeleton', x: 99,  y: 82, h: 46, r: 10 }
+    { el: '.stats',          a: 'mc_face_creeper',  h: 46, spots: ['br', 'r'] },
+    { el: '.pix',            a: 'mc_face_zombie',   h: 46, spots: ['tr', 'r'], m: true },
+    { el: '#projects-list',  a: 'mc_face_skeleton', h: 46, spots: ['br', 'r'] }
   ];
 
   /* Viajantes: atravessam a tela, 2 ou 3 ao mesmo tempo.
@@ -120,7 +124,63 @@ var Decor = (function () {
   }
 
   function addItems(list, cls, back) {
-    list.forEach(function (it) { holderFor(Object.assign({ back: back }, it), cls); });
+    list.forEach(function (it) { if (!it.spots) holderFor(Object.assign({ back: back }, it), cls); });
+  }
+
+  /* ---------- adesivos com posição inteligente ---------- */
+  var placed = [];            // adesivos já posicionados: { holder, it }
+
+  function rectOf(el) { var r = el.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom }; }
+  function hits(a, b, gap) { return a.l < b.r + gap && a.r > b.l - gap && a.t < b.b + gap && a.b > b.t - gap; }
+
+  /* posição (em px dentro da caixa) de cada lugar, para um adesivo de w x h */
+  function spotXY(spot, W, H, w, h) {
+    switch (spot) {
+      case 'tr': return [W - w * 0.9, -h * 0.72];
+      case 'tl': return [-w * 0.1, -h * 0.72];
+      case 'br': return [W - w * 0.55, H - h * 0.3];
+      case 'bl': return [-w * 0.45, H - h * 0.3];
+      case 'r':  return [W - w * 0.2, H * 0.42 - h / 2];
+      case 'l':  return [-w * 0.8, H * 0.42 - h / 2];
+    }
+    return [0, 0];
+  }
+
+  function obstacles() {
+    var list = [];
+    document.querySelectorAll('.stats__badge, .deco, .avatar__frame, .hotbar, .decor-item--planet').forEach(function (el) { list.push(rectOf(el)); });
+    return list;
+  }
+
+  function placeSticker(it, cls) {
+    var holder = holderFor(Object.assign({ x: 0, y: 0 }, it), cls);
+    if (!holder) return;
+    placed.push({ holder: holder, it: it });
+  }
+
+  function layoutStickers() {
+    var walls = obstacles(), taken = [];
+    var vw = document.documentElement.clientWidth;
+    placed.forEach(function (p) {
+      p.holder.style.display = '';
+      if (getComputedStyle(p.holder).display === 'none') return;   // escondido no celular
+      var box = p.holder.parentElement;
+      var W = box.offsetWidth, H = box.offsetHeight;
+      var hs = p.holder.offsetHeight || p.it.h, ws = p.holder.offsetWidth || p.it.h;
+      var spots = p.it.spots.concat(['tr', 'tl', 'r', 'l', 'br', 'bl']), chosen = null;
+      for (var i = 0; i < spots.length && !chosen; i++) {
+        var xy = spotXY(spots[i], W, H, ws, hs);
+        p.holder.style.left = xy[0] + 'px'; p.holder.style.top = xy[1] + 'px';
+        var r = rectOf(p.holder);
+        var bad = r.l < 4 || r.r > vw - 4 ||
+          taken.some(function (t) { return hits(r, t, 8); }) ||
+          walls.some(function (t) { return hits(r, t, 4); });
+        if (!bad) chosen = r;
+      }
+      if (!chosen) { p.holder.style.display = 'none'; return; }   // sem lugar livre: fica de fora
+      p.holder.style.display = '';
+      taken.push(chosen);
+    });
   }
 
   /* ---------- órbitas ----------
@@ -317,8 +377,13 @@ var Decor = (function () {
     var reduce = opts && opts.reduceMotion;
     addItems(PLANETS, 'decor-item--planet', true);
     addOrbits();
-    addItems(STICKERS, 'decor-item--sticker', false);
-    addItems(FACES, 'decor-item--face', false);
+    STICKERS.forEach(function (it) { placeSticker(it, 'decor-item--sticker'); });
+    FACES.forEach(function (it) { placeSticker(it, 'decor-item--face'); });
+    // posiciona depois que fontes e imagens carregam (o tamanho das caixas muda) e de novo ao redimensionar
+    layoutStickers();
+    window.addEventListener('load', layoutStickers);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutStickers);
+    var lt; window.addEventListener('resize', function () { clearTimeout(lt); lt = setTimeout(layoutStickers, 200); });
     runOrbits(reduce);
     quantumMoon();
     startTraffic(reduce);
