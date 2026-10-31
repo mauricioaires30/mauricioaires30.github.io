@@ -27,7 +27,7 @@ var Decor = (function () {
   /* Astros com lua ou satélite girando em volta.
    *   sat.h = altura do satélite, radius = raio da órbita (px), dur = segundos por volta,
    *   tilt = inclinação da órbita (graus), flat = achatamento (1 = círculo).
-   * O satélite fica sempre de pé e passa por trás do astro na metade de cima da órbita.
+   * O satélite fica de pé (ou, com pointDown, com a base virada para o astro) e passa por trás dele na metade de cima da órbita.
    * Os astros giram devagar no próprio eixo (CSS: .decor-item--planet > img). */
   var ORBITS = [
     { el: '.avatar', a: 'ow_timber',  x: 82, y: -8, h: 92,  r: 0, m: true,
@@ -37,7 +37,7 @@ var Decor = (function () {
     { s: 'tech', a: 'ow_brittle', x: 86, y: 12, h: 120, r: 0,
       sat: { a: 'ow_lantern',   h: 40, radius: 96,  dur: 18, tilt: 10,  flat: 0.45 } },
     { s: 'tech', a: 'ow_sun',     x: 6,  y: 40, h: 150, r: 0,
-      sat: { a: 'ow_station',   h: 34, radius: 120, dur: 26, tilt: 8,   flat: 0.45 } }
+      sat: { a: 'ow_station',   h: 34, radius: 120, dur: 26, tilt: 8,   flat: 0.45, pointDown: true } }
   ];
 
   /* Adesivos "segurando" as caixas da página (borda branca de adesivo).
@@ -209,7 +209,9 @@ var Decor = (function () {
     var ex = Math.cos(ang) * o.radius * k, ey = Math.sin(ang) * o.radius * k * o.flat;
     var tilt = o.tilt * Math.PI / 180;
     var x = ex * Math.cos(tilt) - ey * Math.sin(tilt), y = ex * Math.sin(tilt) + ey * Math.cos(tilt);
-    b.el.style.transform = 'translate(' + (b.cx + x - b.sw / 2).toFixed(1) + 'px,' + (b.cy + y - b.sh / 2).toFixed(1) + 'px)';
+    // pointDown: a parte de baixo da arte fica sempre apontada para o astro (a Estação Solar mira o Sol)
+    var turn = o.pointDown ? Math.atan2(-y, -x) * 180 / Math.PI - 90 : 0;
+    b.el.style.transform = 'translate(' + (b.cx + x - b.sw / 2).toFixed(1) + 'px,' + (b.cy + y - b.sh / 2).toFixed(1) + 'px) rotate(' + turn.toFixed(1) + 'deg)';
     b.el.style.zIndex = Math.sin(ang) < 0 ? -1 : 1;                 // atrás do astro na metade de cima
   }
 
