@@ -52,12 +52,11 @@ const I18N = {
     },
     ui: {
       skip: "Ir para o conteúdo",
-      themeToggle: "Alternar entre dia e noite",
-      sunDrop: "Coletar sol"
+      themeToggle: "Alternar entre dia e noite"
     },
     nav: { about: "Sobre", tech: "Linguagens", projects: "Projetos", contact: "Contato" },
     hero: {
-      greeting: "Olá, viajante! Eu sou",
+      greeting: "Olá! Eu sou",
       role: "Desenvolvedor de software · Artista pixel art · Gamedev",
       tagline: "Graduando em Ciência da Computação na UFPA.",
       dialog: [
@@ -96,7 +95,6 @@ const I18N = {
     },
     contact: {
       title: "Contato",
-      text: "Vamos conversar? Escolha uma opção abaixo.",
       pixTitle: "Apoie meu trabalho",
       pixText: "Se algum projeto meu te ajudou, você pode contribuir via Pix. Qualquer valor é bem-vindo!",
       pixAlt: "QR Code Pix para apoiar o trabalho"
@@ -115,12 +113,11 @@ const I18N = {
     },
     ui: {
       skip: "Skip to content",
-      themeToggle: "Switch between day and night",
-      sunDrop: "Collect sun"
+      themeToggle: "Switch between day and night"
     },
     nav: { about: "About", tech: "Languages", projects: "Projects", contact: "Contact" },
     hero: {
-      greeting: "Hello, traveler! I'm",
+      greeting: "Hi! I'm",
       role: "Software developer · Pixel artist · Game developer",
       tagline: "Computer Science student at UFPA.",
       dialog: [
@@ -159,7 +156,6 @@ const I18N = {
     },
     contact: {
       title: "Contact",
-      text: "Let's talk! Pick an option below.",
       pixTitle: "Support my work",
       pixText: "If any of my projects helped you, you can contribute via Pix (Brazilian instant payment). Any amount is appreciated!",
       pixAlt: "Pix QR Code to support the work"

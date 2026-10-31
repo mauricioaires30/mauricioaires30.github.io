@@ -2,8 +2,9 @@
  * Cena do rodapé: uma ervilheira (Plants vs. Zombies) à esquerda atira em
  * zumbis que entram pela direita, em cima dos blocos de grama do Minecraft.
  *
- * Todas as animações são os GIFs originais do PvZ 1 (assets/games/pvz-*.gif):
- * os zumbis andam, e conforme levam tiros perdem o capacete e depois a cabeça,
+ * A ervilheira é a do PvZ 2 (parada e atirando, assets/games/pvz2-*.webp). Os zumbis são os
+ * GIFs originais do PvZ 1 (não há animações do PvZ 2 deles disponíveis): andam, e conforme levam
+ * tiros perdem o capacete e depois a cabeça,
  * como no jogo, até morrerem com a animação de morte. O código só move os
  * elementos. A ervilheira sempre vence: os zumbis são lentos e ainda existe
  * uma linha de segurança que derruba quem chegar perto.
@@ -41,9 +42,11 @@ var Lawn = (function () {
   };
   var COMMON = ['zombie', 'zombie', 'cone', 'cone', 'bucket', 'football'];
 
-  var SHOOT_EVERY = 1.0;          // segundos entre tiros
+  var SHOOT_EVERY = 1.6;          // segundos entre tiros (a animação de tiro dura 1,2 s)
   var PEA_SPEED = 430;            // px/s
-  var SHOOTER_W = 96;             // ervilheira original (quadro de 71 px) ampliada
+  /* Ervilheira do PvZ 2: parada (pvz2-peashooter-idle) e atirando (pvz2-peashooter-shoot),
+   * as duas no mesmo quadro de 157 x 150 px; a ervilha sai do cano no quadro 33 de 60 (0,66 s). */
+  var SHOOTER_H = 110, SHOOTER_RATIO = 157 / 150, SHOOT_MS = 1200, PEA_OUT_MS = 660;
 
   function init() {
     var lawn = document.getElementById('lawn');
@@ -63,13 +66,35 @@ var Lawn = (function () {
 
     function setup() {
       measure();
-      shooterW = Math.round(SHOOTER_W * k);
+      shooterW = Math.round(SHOOTER_H * SHOOTER_RATIO * k);
       shooter = document.createElement('img');
       shooter.className = 'pvz-shooter';
       shooter.alt = '';
-      shooter.src = DIR + 'pvz-peashooter.gif';
+      shooter.src = DIR + 'pvz2-peashooter-idle.webp';
       shooter.style.width = shooterW + 'px';
       lawn.appendChild(shooter);
+      // pré-carrega a animação de tiro
+      new Image().src = DIR + 'pvz2-peashooter-shoot.webp';
+    }
+
+    /* Toca a animação de tiro (um <img> novo para ela começar do primeiro quadro) e solta a ervilha na hora do cuspe */
+    var shooting = false;
+    function shoot() {
+      if (shooting) return;
+      shooting = true;
+      var img = document.createElement('img');
+      img.className = 'pvz-shooter'; img.alt = '';
+      img.src = DIR + 'pvz2-peashooter-shoot.webp';
+      img.style.width = shooterW + 'px';
+      shooter.replaceWith(img); shooter = img;
+      setTimeout(function () { if (running) launchPea(); }, PEA_OUT_MS);
+      setTimeout(function () {
+        var idle = document.createElement('img');
+        idle.className = 'pvz-shooter'; idle.alt = '';
+        idle.src = DIR + 'pvz2-peashooter-idle.webp';
+        idle.style.width = shooterW + 'px';
+        shooter.replaceWith(idle); shooter = idle; shooting = false;
+      }, SHOOT_MS);
     }
 
     /* Mostra a animação `name` no zumbi: um <img> novo, para o GIF recomeçar do primeiro quadro */
@@ -143,8 +168,8 @@ var Lawn = (function () {
       var p = document.createElement('img');
       p.className = 'pvz-pea'; p.alt = ''; p.src = DIR + 'pvz-pea.png';
       p.style.width = Math.round(24 * k) + 'px';
-      var x = 8 + shooterW * 0.8;
-      p.style.bottom = Math.round(shooterW * 0.6) + 'px';
+      var x = 8 + shooterW * 0.86;
+      p.style.bottom = Math.round(SHOOTER_H * k * 0.66) + 'px';
       p.style.transform = 'translate3d(' + x + 'px,0,0)';
       lawn.appendChild(p);
       peas.push({ el: p, x: x });
@@ -176,7 +201,7 @@ var Lawn = (function () {
       // tiros: a ervilheira só atira quando há zumbi na frente
       if (frontZombie()) {
         fireAcc += dt;
-        if (fireAcc >= SHOOT_EVERY) { fireAcc = 0; launchPea(); }
+        if (fireAcc >= SHOOT_EVERY) { fireAcc = 0; shoot(); }
       } else {
         fireAcc = SHOOT_EVERY * 0.6;
       }

@@ -321,27 +321,6 @@
   renderContacts();
   renderTech();
 
-  /* ---------- Sóis que caem (Plants vs. Zombies): clique e o sol some ---------- */
-  function dropSun() {
-    if (document.hidden) return scheduleSun();
-    var drop = el('button', { type: 'button', class: 'sun-drop', 'aria-label': I18N[currentLang].ui.sunDrop });
-    drop.appendChild(sprite('sun', 0.7));
-    drop.style.left = (6 + Math.random() * 84) + '%';
-    drop.addEventListener('click', function () {
-      drop.classList.add('is-popped');
-      setTimeout(function () { drop.remove(); }, 220);
-    });
-    drop.addEventListener('animationend', function () { drop.remove(); });
-    document.body.appendChild(drop);
-    scheduleSun();
-  }
-
-  function scheduleSun() {
-    setTimeout(dropSun, 16000 + Math.random() * 14000);
-  }
-
-  if (!reduceMotion) setTimeout(dropSun, 9000);
-
   /* ---------- Init ---------- */
   setLang(detectLang());
   Decor.init({ reduceMotion: reduceMotion });

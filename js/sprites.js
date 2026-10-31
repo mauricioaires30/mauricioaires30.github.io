@@ -181,26 +181,21 @@ const GAME_ART = {
   dr_kris:     art("dr-kris.png", 38, 74, true),
   dr_lancer:   art("dr-lancer.png", 60, 68, true),
   dr_ralsei:   art("dr-ralsei.png", 46, 86, true),
-  dr_susie:    art("dr-susie.png", 50, 88, true),
   dr_spamton:  art("dr-spamton.webp", 64, 76, true),
   dr_aqua:     art("dr-aqua.webp", 52, 68, true),
-  dr_rouxls:   art("dr-rouxls.png", 94, 114, true),
-  ut_sans:     art("ut-sans.webp", 74, 60, true),
 
   /* Terraria */
   tr_guide:    art("tr-guide.png", 26, 46, true),
   tr_life:     art("tr-life-crystal.png", 32, 32, true),
   tr_wizard:   art("tr-wizard.png", 34, 54, true),
   tr_slime:    art("tr-blue-slime.png", 32, 22, true),
-  tr_star:     art("tr-fallen-star.webp", 22, 24, true),
-  tr_eoc:      art("tr-eye-of-cthulhu.webp", 140, 150, true),
+  tr_star:     art("tr-fallen-star.png", 22, 24, true),
+  tr_eoc:      art("tr-eye-of-cthulhu.gif", 110, 162, true),
   tr_duke:     art("tr-duke-fishron.webp", 196, 144, true),
-  tr_wyvern:   art("tr-wyvern.png", 598, 58, true),
 
   /* Plants vs. Zombies */
   sun:         art("pvz-sun.png", 94, 97),
   sunflower:   art("pvz-sunflower.webp", 171, 170),
-  pvz_dave:    art("pvz-crazy-dave.png", 99, 240),
   pvz_wallnut: art("pvz-wall-nut.png", 170, 197),
 
   /* Minecraft: so a frente das cabecas dos mobs e alguns itens */
@@ -214,19 +209,19 @@ const GAME_ART = {
   mc_pearl:         art("mc-ender-pearl.png", 13, 13, true),
 
   /* Outer Wilds: planetas (recortes do mapa planetario oficial), naves e cometa */
-  ow_timber    : art("map-timber-hearth.png", 162, 164),
-  ow_attlerock : art("map-attlerock.png", 72, 69),
-  ow_giants    : art("ow-giants-deep.png", 200, 200),
-  ow_brittle   : art("ow-brittle-hollow.png", 130, 159),
-  ow_lantern   : art("ow-hollows-lantern.png", 64, 74),
-  ow_bramble   : art("ow-dark-bramble.png", 200, 218),
-  ow_twins     : art("map-twins.png", 135, 290),
-  ow_quantum   : art("ow-quantum-moon.png", 52, 52),
+  ow_timber    : art("ow-timber-hearth.png", 99, 99),
+  ow_attlerock : art("ow-attlerock.png", 43, 44),
+  ow_giants    : art("ow-giants-deep.png", 262, 262),
+  ow_brittle   : art("ow-brittle-hollow.png", 108, 132),
+  ow_lantern   : art("ow-hollows-lantern.png", 59, 68),
+  ow_bramble   : art("ow-dark-bramble.png", 241, 263),
+  ow_twins     : art("ow-hourglass-twins.png", 68, 128),
+  ow_quantum   : art("ow-quantum-moon.png", 58, 58),
   ow_interloper: art("map-interloper.png", 336, 187),
   ow_stranger:   art("ow-stranger.png", 227, 231),
   ow_sun       : art("map-sun.png", 343, 342),
   ow_station   : art("map-sun-station.png", 90, 63),
-  ow_cannon    : art("map-probe-cannon.png", 200, 154),
+  ow_cannon    : art("ow-probe-cannon.png", 100, 77),
   ow_eye_symbol: art("ow-eye-symbol.png", 360, 360),
   ow_ship:       art("ow-ship.png", 27, 26, true),
   ow_ventures:   art("ow-ventures.png", 160, 125)

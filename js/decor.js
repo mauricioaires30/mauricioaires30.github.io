@@ -1,15 +1,16 @@
 /* =====================================================================
- * Enfeites espalhados pela página (todos com arte oficial dos jogos):
- *  - planetas de Outer Wilds, atrás do conteúdo;
- *  - adesivos de Deltarune, Terraria, PvZ e Minecraft, por cima;
- *  - rostos de mobs do Minecraft espiando pelas laterais;
- *  - tráfego espacial: nave, cometa Xereta e O Desconhecido cruzando a tela.
+ * Enfeites espalhados pela página:
+ *  - planetas de Outer Wilds (arte do mapa planetário do jogo), atrás do conteúdo,
+ *    com as luas e satélites girando em volta do planeta deles;
+ *  - adesivos de Deltarune, Terraria, PvZ e Minecraft "segurando" os cards;
+ *  - alguns rostos de mobs do Minecraft espiando atrás das caixas;
+ *  - viajantes cruzando a tela (2 ou 3 de cada vez): nave, Xereta, Desconhecido,
+ *    Duke Fishron, Olho de Cthulhu, a estrela cadente e o sol do PvZ.
  *
- * Para mexer em algo, edite as listas abaixo. Cada item:
- *   s  = id da seção onde fica ('top' = início, 'about', 'tech', 'projects', 'contact')
- *   a  = nome da arte (veja GAME_ART em sprites.js)
- *   x  = posição horizontal (% da seção; pode ser negativo ou passar de 100)
- *   y  = posição vertical (% da seção)
+ * Para mexer em algo, edite as listas abaixo. Cada item fica preso a:
+ *   el = um seletor CSS (o item fica por cima daquela caixa, ex.: '#projects-list .project:nth-child(2)')
+ *   ou s = o id de uma seção ('top', 'about', 'tech', 'projects', 'contact').
+ *   x, y = posição em % dessa caixa ou seção (pode passar um pouco de 0 ou 100 para "sair" da borda)
  *   h  = altura em pixels no computador
  *   r  = rotação em graus
  *   m  = true para aparecer também no celular
@@ -17,65 +18,51 @@
 var Decor = (function () {
   'use strict';
 
-  /* Planetas (atrás do conteúdo). Cada um aparece uma vez só na página, junto da sua lua:
-   * Timber Hearth + Attlerock ficam ao lado da foto (no HTML); Brittle Hollow + Hollow's Lantern
-   * aqui. A Lua Quântica não está nesta lista: ela muda de lugar sozinha (veja quantumMoon). */
+  /* Planetas sem lua (atrás do conteúdo). A Lua Quântica muda de lugar sozinha (veja quantumMoon). */
   var PLANETS = [
-    { s: 'about',    a: 'ow_bramble',   x: 91,  y: 58,  h: 130, r: -10 },
-    { s: 'tech',     a: 'ow_brittle',   x: 91,  y: 6,   h: 120, r: -12 },
-    { s: 'tech',     a: 'ow_lantern',   x: 86.5, y: 2,  h: 60,  r: 6 },
-    { s: 'projects', a: 'ow_twins',     x: -3,  y: 30,  h: 120, r: -14 }
+    { s: 'about',    a: 'ow_bramble', x: 84, y: 66, h: 150, r: -10 },
+    { s: 'contact',  a: 'ow_twins',   x: 30, y: 62, h: 120, r: -12 }
   ];
 
-  /* Astros com um satélite girando em volta (a órbita é uma elipse inclinada).
-   *   a/h = o astro e sua altura; sat = o satélite, com altura h, raio da órbita (px, no computador),
-   *   dur = segundos por volta, tilt = inclinação da órbita (graus) e flat = achatamento (0 a 1). */
+  /* Astros com lua ou satélite girando em volta.
+   *   sat.h = altura do satélite, radius = raio da órbita (px), dur = segundos por volta,
+   *   tilt = inclinação da órbita (graus), flat = achatamento (1 = círculo),
+   *   face = giro da arte para a mesma face ficar sempre virada para o planeta, como no jogo. */
   var ORBITS = [
-    { s: 'top',  a: 'ow_giants', x: 55,  y: 5,  h: 96,  r: 0,
-      sat: { a: 'ow_cannon',  h: 40, radius: 92,  dur: 16, tilt: -18, flat: 0.42 } },
-    { s: 'tech', a: 'ow_sun',    x: 8,   y: 44, h: 150, r: 0,
-      sat: { a: 'ow_station', h: 30, radius: 118, dur: 26, tilt: 14,  flat: 0.38 } }
+    { el: '.avatar', a: 'ow_timber',  x: 80, y: -6, h: 92, r: 0, m: true,
+      sat: { a: 'ow_attlerock', h: 34, radius: 78,  dur: 14, tilt: -20, flat: 0.62, face: 0 } },
+    { s: 'top',  a: 'ow_giants',  x: 56, y: 6,  h: 110, r: 0,
+      sat: { a: 'ow_cannon',    h: 40, radius: 96,  dur: 18, tilt: -16, flat: 0.62, face: 200 } },
+    { s: 'tech', a: 'ow_brittle', x: 86, y: 12, h: 120, r: 0,
+      sat: { a: 'ow_lantern',   h: 46, radius: 100, dur: 16, tilt: 18,  flat: 0.64, face: 0 } },
+    { s: 'tech', a: 'ow_sun',     x: 6,  y: 40, h: 150, r: 0,
+      sat: { a: 'ow_station',   h: 30, radius: 122, dur: 24, tilt: 12,  flat: 0.66, face: 180 } }
   ];
 
-  /* Adesivos (por cima, com borda branca de adesivo): Deltarune, Terraria, PvZ e Minecraft */
+  /* Adesivos "segurando" as caixas da página (borda branca de adesivo) */
   var STICKERS = [
-    { s: 'top',      a: 'mc_totem',    x: 48,  y: 8,   h: 44,  r: 12 },
-    { s: 'top',      a: 'tr_guide',    x: 95.5, y: 70, h: 96,  r: -6 },
-    { s: 'about',    a: 'dr_ralsei',   x: 92,  y: 6,   h: 132, r: 8 },
-    { s: 'about',    a: 'tr_life',     x: 1.5, y: 82,  h: 56,  r: -10 },
-    { s: 'about',    a: 'tr_wizard',   x: 60,  y: 82,  h: 110, r: 5 },
-    { s: 'tech',     a: 'ut_sans',     x: 90,  y: 38,  h: 100, r: 6 },
-    { s: 'tech',     a: 'mc_gapple',   x: 70,  y: 78,  h: 52,  r: -14 },
-    { s: 'projects', a: 'dr_aqua',     x: -2.5, y: 1,  h: 150, r: -6 },
-    { s: 'projects', a: 'dr_spamton',  x: -1.5, y: 62, h: 130, r: 6 },
-    { s: 'projects', a: 'dr_susie',    x: 91,  y: 58,  h: 150, r: 5 },
-    { s: 'projects', a: 'pvz_wallnut', x: 93,  y: 90,  h: 90,  r: -8 },
-    { s: 'projects', a: 'dr_kris',     x: 1,   y: 84,  h: 130, r: -4 },
-    { s: 'projects', a: 'tr_slime',    x: 93,  y: 12,  h: 56,  r: 7 },
-    { s: 'contact',  a: 'pvz_dave',    x: 3,   y: 56,  h: 190, r: -4 },
-    { s: 'contact',  a: 'dr_lancer',   x: 42,  y: 72,  h: 96,  r: 6 },
-    { s: 'contact',  a: 'dr_rouxls',   x: 90,  y: 66,  h: 150, r: 6 },
-    { s: 'contact',  a: 'mc_diamond',  x: 52,  y: 10,  h: 56,  r: -10 },
-    { s: 'contact',  a: 'mc_cake',     x: 87,  y: 88,  h: 72,  r: 7 },
-    { s: 'contact',  a: 'mc_pearl',    x: 47,  y: 90,  h: 44,  r: 0 }
+    { el: '.dialog',                              a: 'tr_guide',    x: 96,  y: -48, h: 84,  r: -4 },
+    { el: '.stats',                               a: 'dr_ralsei',   x: 88,  y: -58, h: 110, r: 6 },
+    { el: '.hotbar-wrap',                         a: 'tr_slime',    x: 58,  y: 8,   h: 40,  r: 0 },
+    { el: '#projects-list .project:nth-child(1)', a: 'dr_kris',     x: 84,  y: -30, h: 96,  r: 0, m: true },
+    { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   x: -10, y: 70,  h: 80,  r: -8 },
+    { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  x: 90,  y: 60,  h: 96,  r: 6 },
+    { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     x: 86,  y: -34, h: 104, r: 0, m: true },
+    { el: '.pix',                                 a: 'pvz_wallnut', x: -14, y: 74,  h: 80,  r: -8 },
+    { el: '#contact-links',                       a: 'mc_diamond',  x: 96,  y: -6,  h: 40,  r: -10 },
+    { el: '#contact-links',                       a: 'mc_cake',     x: 92,  y: 92,  h: 50,  r: 6 }
   ];
 
-  /* Rostos de mobs do Minecraft espiando pelas laterais (só a frente da cabeça) */
+  /* Rostos de mobs do Minecraft espiando atrás das caixas */
   var FACES = [
-    { s: 'about',    a: 'mc_face_creeper',  x: -1.8, y: 32, h: 60, r: -12, m: true },
-    { s: 'about',    a: 'mc_face_skeleton', x: 98.6, y: 46, h: 60, r: 12,  m: true },
-    { s: 'tech',     a: 'mc_face_zombie',   x: -1.8, y: 10, h: 60, r: -10 },
-    { s: 'tech',     a: 'mc_face_creeper',  x: 98.6, y: 80, h: 60, r: 10,  m: true },
-    { s: 'projects', a: 'mc_face_skeleton', x: -1.8, y: 66, h: 60, r: -9 },
-    { s: 'projects', a: 'mc_face_zombie',   x: 98.6, y: 14, h: 60, r: 11,  m: true },
-    { s: 'contact',  a: 'mc_face_creeper',  x: 98.8, y: 40, h: 60, r: 9 },
-    { s: 'contact',  a: 'mc_face_zombie',   x: -1.8, y: 14, h: 60, r: -11 }
+    { el: '.stats',          a: 'mc_face_creeper',  x: -10, y: 60, h: 46, r: -12 },
+    { el: '.pix',            a: 'mc_face_zombie',   x: 94,  y: -8, h: 46, r: 10, m: true },
+    { el: '#projects-list',  a: 'mc_face_skeleton', x: 98,  y: 46, h: 46, r: 10 }
   ];
 
-  /* Viajantes: atravessam a tela um de cada vez (nunca mais de um ao mesmo tempo).
-   *   faces = para que lado a ARTE original aponta ('left' ou 'right'); o código espelha
-   *           quando a viagem é no outro sentido, então eles sempre andam de frente.
-   *           null = sem frente (arte redonda ou simétrica).
+  /* Viajantes: atravessam a tela, 2 ou 3 ao mesmo tempo.
+   *   faces = para que lado a ARTE original aponta ('left', 'right' ou 'down'); o código gira/espelha
+   *           para eles sempre andarem de frente. null = sem frente (arte redonda).
    *   fall  = true: cai de cima para baixo na diagonal, como uma estrela cadente.
    *   trail = rastro de partículas: cores, tamanho, forma, intervalo (ms), duração (ms),
    *           espalhamento (px) e tail = onde nasce (fração da largura, a partir do centro). */
@@ -88,15 +75,26 @@ var Decor = (function () {
       trail: { colors: ['#7fdcff', '#bfeeff', '#4fc9c0'], size: 4, square: false, every: 140, life: 1500, spread: 30, glow: '#7fdcff', ring: true } },
     { a: 'tr_duke',       h: 96,  dur: [16, 22], faces: 'left',
       trail: { colors: ['#ffffff', '#bfeeff', '#7fd6ff'], size: 6, square: false, every: 80, life: 1100, spread: 12, glow: '#7fd6ff', tail: 0.45 } },
-    { a: 'tr_eoc',        h: 100, dur: [16, 22], faces: 'left',
+    { a: 'tr_eoc',        h: 96,  dur: [16, 22], faces: 'down',
       trail: { colors: ['#e03a3a', '#ff7b7b', '#8f1d1d'], size: 5, square: false, every: 70, life: 1000, spread: 12, glow: '#ff5a5a', tail: 0.4 } },
-    { a: 'tr_wyvern',     h: 46,  dur: [20, 26], faces: 'left', bob: true,
-      trail: { colors: ['#ffffff', '#e6f7ff', '#cfe9ff'], size: 7, square: false, every: 90, life: 1400, spread: 14, glow: '#ffffff', tail: 0.5 } },
-    { a: 'tr_star',       h: 40,  dur: [4, 6],   faces: null, fall: true, spin: true,
-      trail: { colors: ['#fff3a0', '#ffd23d', '#ffffff'], size: 5, square: true, every: 35, life: 800, spread: 6, glow: '#ffd23d', tail: 0.5 } }
+    { a: 'tr_star',       h: 40,  dur: [5, 7],   faces: null, fall: true,
+      trail: { colors: ['#fff3a0', '#ffd23d', '#ffffff'], size: 5, square: true, every: 35, life: 800, spread: 6, glow: '#ffd23d', tail: 0.5 } },
+    { a: 'sun',           h: 64,  dur: [9, 12],  faces: null, fall: true,
+      trail: { colors: ['#fff6b0', '#ffd23d', '#ffffff'], size: 5, square: false, every: 60, life: 900, spread: 14, glow: '#ffe066', tail: 0.4 } }
   ];
+  var MAX_TRAVELERS = 3;
 
-  function layer(section, cls) {
+  /* ---------- posicionamento ---------- */
+  function host(it) {
+    if (it.el) {
+      var target = document.querySelector(it.el);
+      if (!target) return null;
+      if (getComputedStyle(target).position === 'static') target.style.position = 'relative';
+      return target;
+    }
+    var section = document.getElementById(it.s);
+    if (!section) return null;
+    var cls = 'decor-' + (it.back ? 'back' : 'front');
     var l = section.querySelector(':scope > .' + cls);
     if (!l) {
       l = document.createElement('div');
@@ -107,47 +105,64 @@ var Decor = (function () {
     return l;
   }
 
+  function holderFor(it, cls) {
+    var a = GAME_ART[it.a];
+    var h = host(it);
+    if (!a || !h) return null;
+    var holder = document.createElement('span');
+    holder.className = 'decor-item ' + cls + (it.m ? ' decor-item--m' : '') + (it.el ? ' decor-item--held' : '');
+    holder.setAttribute('aria-hidden', 'true');
+    holder.innerHTML = spriteHTML(it.a, it.h / a.h);
+    holder.style.cssText = 'left:' + it.x + '%;top:' + it.y + '%;--r:' + (it.r || 0) + 'deg';
+    h.appendChild(holder);
+    return holder;
+  }
+
+  function addItems(list, cls, back) {
+    list.forEach(function (it) { holderFor(Object.assign({ back: back }, it), cls); });
+  }
+
+  /* ---------- órbitas ----------
+   * O satélite é movido por código numa elipse inclinada ao redor do centro do astro e girado para a
+   * mesma face ficar sempre voltada para o planeta. Na metade de trás da órbita ele passa atrás do astro. */
+  var orbiters = [];
+
   function addOrbits() {
     ORBITS.forEach(function (o) {
-      var section = document.getElementById(o.s);
+      var holder = holderFor(Object.assign({ back: true }, o), 'decor-item--planet');
+      if (!holder) return;
       var a = GAME_ART[o.a], sa = GAME_ART[o.sat.a];
-      if (!section || !a || !sa) return;
-      var holder = document.createElement('span');
-      holder.className = 'decor-item decor-item--planet';
-      holder.style.cssText = 'left:' + o.x + '%;top:' + o.y + '%;--r:' + (o.r || 0) + 'deg';
-      holder.innerHTML = spriteHTML(o.a, o.h / a.h);
       var w = o.h * a.w / a.h;
-      var plane = document.createElement('span');
-      plane.className = 'orbit';
-      // o centro da órbita é o centro do astro
-      plane.style.cssText = 'left:' + (w / 2) + 'px;top:' + (o.h / 2) + 'px;--radius:' + o.sat.radius + 'px;--dur:' + o.sat.dur + 's;' +
-        '--tilt:' + o.sat.tilt + 'deg;--flat:' + o.sat.flat + ';--inv:' + (1 / o.sat.flat).toFixed(3);
       var sat = document.createElement('span');
-      sat.className = 'orbit__sat';
+      sat.className = 'orbit-sat';
       sat.innerHTML = spriteHTML(o.sat.a, o.sat.h / sa.h);
-      var spin = document.createElement('span');
-      spin.className = 'orbit__spin';
-      spin.appendChild(sat);
-      plane.appendChild(spin);
-      holder.appendChild(plane);
-      layer(section, 'decor-back').appendChild(holder);
+      holder.appendChild(sat);
+      orbiters.push({ el: sat, cx: w / 2, cy: o.h / 2, sw: o.sat.h * sa.w / sa.h, sh: o.sat.h, o: o.sat,
+                      phase: Math.random() * Math.PI * 2 });
     });
   }
 
-  function addItems(list, layerClass, itemClass) {
-    list.forEach(function (it) {
-      var section = document.getElementById(it.s);
-      var a = GAME_ART[it.a];
-      if (!section || !a) return;
-      var holder = document.createElement('span');
-      holder.className = 'decor-item ' + itemClass + (it.m ? ' decor-item--m' : '');
-      holder.innerHTML = spriteHTML(it.a, it.h / a.h);
-      holder.style.cssText = 'left:' + it.x + '%;top:' + it.y + '%;--r:' + (it.r || 0) + 'deg';
-      layer(section, layerClass).appendChild(holder);
-    });
+  function placeOrbiter(b, t) {
+    var o = b.o, k = window.innerWidth < 700 ? 0.7 : 1;
+    var ang = b.phase + (t / 1000) * (Math.PI * 2 / o.dur);
+    var ex = Math.cos(ang) * o.radius * k, ey = Math.sin(ang) * o.radius * k * o.flat;
+    var tilt = o.tilt * Math.PI / 180;
+    var x = ex * Math.cos(tilt) - ey * Math.sin(tilt), y = ex * Math.sin(tilt) + ey * Math.cos(tilt);
+    var facing = Math.atan2(y, x) * 180 / Math.PI + o.face;       // a face "o.face" aponta para o planeta
+    b.el.style.transform = 'translate(' + (b.cx + x - b.sw / 2).toFixed(1) + 'px,' + (b.cy + y - b.sh / 2).toFixed(1) + 'px) rotate(' + facing.toFixed(1) + 'deg)';
+    b.el.style.zIndex = Math.sin(ang) < 0 ? -1 : 1;                 // atrás do astro na metade de cima
   }
 
-  /* ---------- tráfego espacial ---------- */
+  function runOrbits(reduceMotion) {
+    if (!orbiters.length) return;
+    if (reduceMotion) { orbiters.forEach(function (b) { placeOrbiter(b, 0); }); return; }
+    (function tick(t) {
+      if (!document.hidden) orbiters.forEach(function (b) { placeOrbiter(b, t); });
+      requestAnimationFrame(tick);
+    })(0);
+  }
+
+  /* ---------- viajantes ---------- */
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
   /* Uma partícula do rastro, nascendo em (x, y) e se apagando. */
@@ -167,36 +182,48 @@ var Decor = (function () {
     anim.onfinish = function () { p.remove(); };
   }
 
+  /* faixas verticais ocupadas pelos viajantes na tela, para não se cruzarem */
+  var lanes = [];
+
+  function pickLane() {
+    var bands = [0.12, 0.3, 0.48, 0.66, 0.82].filter(function (b) { return lanes.indexOf(b) < 0; });
+    var b = bands.length ? bands[Math.floor(Math.random() * bands.length)] : 0.5;
+    lanes.push(b);
+    return b;
+  }
+
   function launch(box, kind, onDone) {
     var a = GAME_ART[kind.a];
     var h = kind.h * (window.innerWidth < 700 ? 0.7 : 1);
     var w = h * a.w / a.h;
     var vw = window.innerWidth, vh = window.innerHeight;
     var right = Math.random() < 0.5;                       // true = vai da esquerda para a direita
-    var x0, y0, x1, y1;
-    if (kind.fall) {                                       // estrela cadente: de cima para baixo, na diagonal
-      x0 = rnd(vw * 0.15, vw * 0.9); y0 = -h - 20;
-      x1 = x0 + (right ? 1 : -1) * rnd(vw * 0.12, vw * 0.3); y1 = vh + h + 20;
+    var x0, y0, x1, y1, lane = null;
+    if (kind.fall) {                                       // cai de cima para baixo, na diagonal
+      x0 = rnd(vw * 0.1, vw * 0.85); y0 = -h - 20;
+      x1 = x0 + (right ? 1 : -1) * rnd(vw * 0.1, vw * 0.25); y1 = vh + h + 20;
     } else {
+      lane = pickLane();
       x0 = right ? -w - 30 : vw + 30; x1 = right ? vw + 30 : -w - 30;
-      y0 = rnd(vh * 0.1, vh * 0.78); y1 = Math.min(vh * 0.85, Math.max(vh * 0.05, y0 + rnd(-vh * 0.25, vh * 0.25)));
+      y0 = vh * lane + rnd(-vh * 0.04, vh * 0.04); y1 = y0 + rnd(-vh * 0.1, vh * 0.1);
     }
     var dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy);
     var ux = dx / len, uy = dy / len;                      // sentido da viagem
 
-    // a arte aponta para `faces`; se a viagem vai para o outro lado, espelha: assim sempre anda de frente
+    // gira/espelha a arte para ela sempre andar de frente
     var flip = 1, angle = 0;
-    if (kind.faces) {
+    if (kind.faces === 'down') {
+      angle = Math.atan2(dy, dx) * 180 / Math.PI - 90;     // a frente (embaixo na arte) aponta para onde vai
+    } else if (kind.faces) {
       flip = ((kind.faces === 'left') === right) ? -1 : 1;
-      var tilt = Math.atan2(dy, Math.abs(dx)) * 180 / Math.PI;   // o nariz acompanha a trajetória
+      var tilt = Math.atan2(dy, Math.abs(dx)) * 180 / Math.PI;
       angle = right ? tilt : -tilt;
     }
 
     var node = document.createElement('span');
     node.className = 'traffic__item';
     node.innerHTML = spriteHTML(kind.a, h / a.h);
-    if (kind.spin && node.firstChild) node.firstChild.style.animation = (kind.a === 'ow_stranger' ? 'tspin 26s linear infinite' : 'tspin .7s linear infinite');   // a estrela gira ao cair; a roda do Desconhecido, bem devagar
-    if (kind.bob && node.firstChild) node.firstChild.style.animation = 'bob .5s steps(2) infinite';   // bate as asas / balança
+    if (kind.spin && node.firstChild) node.firstChild.style.animation = 'tspin 26s linear infinite';   // a roda do Desconhecido gira devagar
     box.appendChild(node);
 
     function pose(x, y) { return 'translate(' + x + 'px,' + y + 'px) rotate(' + angle + 'deg) scaleX(' + flip + ')'; }
@@ -212,14 +239,18 @@ var Decor = (function () {
       if (!(t >= 0 && t < 1)) return;
       var cx = x0 + dx * t + w / 2, cy = y0 + dy * t + h / 2;
       var bx, by;
-      if (tr.ring) {                                       // o medalhão não tem traseiro: solta faíscas em volta
+      if (tr.ring) {                                       // a roda não tem traseiro: solta faíscas em volta
         var ang = Math.random() * Math.PI * 2; bx = Math.cos(ang) * w * 0.52; by = Math.sin(ang) * h * 0.52;
       } else {
         bx = -ux * w * (tr.tail || 0.5); by = -uy * w * (tr.tail || 0.5);
       }
       puff(box, cx + bx, cy + by, tr);
     }, tr.every);
-    anim.onfinish = function () { clearInterval(timer); node.remove(); if (onDone) onDone(); };
+    anim.onfinish = function () {
+      clearInterval(timer); node.remove();
+      if (lane !== null) lanes.splice(lanes.indexOf(lane), 1);
+      if (onDone) onDone();
+    };
   }
 
   function startTraffic(reduceMotion) {
@@ -229,16 +260,18 @@ var Decor = (function () {
     box.setAttribute('aria-hidden', 'true');
     document.body.appendChild(box);
 
-    // um de cada vez, com uma pausa entre eles, para a tela não ficar poluída
-    var last = -1;
+    // até 3 ao mesmo tempo, sem repetir os mesmos tipos em seguida
+    var active = 0, recent = [];
     function next() {
-      if (document.hidden) { setTimeout(next, 4000); return; }
-      var i;
-      do { i = Math.floor(Math.random() * TRAFFIC.length); } while (i === last && TRAFFIC.length > 1);
-      last = i;
-      launch(box, TRAFFIC[i], function () { setTimeout(next, rnd(9000, 16000)); });
+      setTimeout(next, rnd(5000, 9000));
+      if (document.hidden || active >= MAX_TRAVELERS) return;
+      var choices = TRAFFIC.filter(function (k) { return recent.indexOf(k.a) < 0; });
+      var kind = choices[Math.floor(Math.random() * choices.length)];
+      recent.push(kind.a); if (recent.length > 3) recent.shift();
+      active++;
+      launch(box, kind, function () { active--; });
     }
-    setTimeout(next, 3500);
+    setTimeout(next, 2500);
   }
 
   /* ---------- Lua Quântica ----------
@@ -248,7 +281,7 @@ var Decor = (function () {
     var main = document.getElementById('main');
     var a = GAME_ART.ow_quantum;
     if (!main || !a) return;
-    var size = window.innerWidth < 700 ? 34 : 52;
+    var size = window.innerWidth < 700 ? 34 : 50;
     var moon = document.createElement('span');
     moon.className = 'quantum';
     moon.setAttribute('aria-hidden', 'true');
@@ -261,7 +294,7 @@ var Decor = (function () {
       var viewTop = -top - 60, viewBottom = -top + window.innerHeight + 60;
       var x, y, tries = 0;
       do {
-        x = Math.random() < 0.5 ? rnd(0.008, 0.035) * W : W - size - rnd(0.008, 0.035) * W;
+        x = Math.random() < 0.5 ? rnd(0.03, 0.08) * W : W - size - rnd(0.03, 0.08) * W;
         y = rnd(60, Math.max(120, H - size - 60));
         tries++;
       } while (avoidView && y + size > viewTop && y < viewBottom && tries < 60);
@@ -281,12 +314,14 @@ var Decor = (function () {
   }
 
   function init(opts) {
-    addItems(PLANETS, 'decor-back', 'decor-item--planet');
+    var reduce = opts && opts.reduceMotion;
+    addItems(PLANETS, 'decor-item--planet', true);
     addOrbits();
-    addItems(STICKERS, 'decor-front', 'decor-item--sticker');
-    addItems(FACES, 'decor-front', 'decor-item--face');
+    addItems(STICKERS, 'decor-item--sticker', false);
+    addItems(FACES, 'decor-item--face', false);
+    runOrbits(reduce);
     quantumMoon();
-    startTraffic(opts && opts.reduceMotion);
+    startTraffic(reduce);
   }
 
   return { init: init };

@@ -187,9 +187,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .avatar__frame img { width: 100%; height: 100%; object-fit: cover; }
 .avatar__fallback { display: grid; place-items: center; width: 100%; height: 100%; }
 .deco { position: absolute; z-index: 3; animation: bob 2.4s steps(4) infinite; }
-.deco--planet { top: -.4rem; right: -.2rem; animation-duration: 3.2s; }
 .deco--flower { bottom: -.8rem; left: 0; animation: none; }
-.deco--moon { top: 4.6rem; right: -1.4rem; animation-duration: 2.8s; }
 
 /* Céu */
 .sky { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
@@ -223,7 +221,7 @@ h1, h2, h3, p, dl, dd { margin: 0; }
   box-shadow: 6px 10px 0 0 var(--shadow);
 }
 .eye__frame { display: grid; place-items: center; }
-.eye__frame img { width: 112%; height: 112%; max-width: none; object-fit: contain; }
+.eye__frame img { width: 100%; height: 100%; object-fit: contain; transform: scale(1.12); }
 
 .stats {
   margin: 4px; padding: 1.1rem 1.2rem; background: #000; color: #fff; font-family: var(--dialog); font-size: 1.5rem; line-height: 1.2;
@@ -334,22 +332,16 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .decor-front { z-index: 2; }
 .decor-item { position: absolute; display: block; line-height: 0; transform: rotate(var(--r, 0deg)); }
 .decor-item img { display: block; max-width: none; }
+.decor-item--held { z-index: 3; pointer-events: none; }
+.decor-item--planet.decor-item--held { z-index: -1; }
 .decor-item--sticker img {
   filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 5px rgba(0, 0, 0, .4));
 }
 .decor-item--face img { filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .35)); }
 /* Órbita: um plano inclinado e achatado onde o satélite gira; ele é "desinclinado" para continuar de pé */
-.orbit { position: absolute; width: 0; height: 0; transform: rotate(var(--tilt)) scaleY(var(--flat)); }
-.orbit__spin { position: absolute; left: 0; top: 0; width: 0; height: 0; animation: orbit-spin var(--dur) linear infinite; }
-.orbit__sat { position: absolute; left: var(--radius); top: 0; line-height: 0; display: block;
-  animation: orbit-unspin var(--dur) linear infinite; }
-.orbit__sat img { display: block; max-width: none; }
-@keyframes tspin { to { transform: rotate(360deg); } }
-@keyframes orbit-spin { to { transform: rotate(360deg); } }
-@keyframes orbit-unspin {
-  from { transform: rotate(0deg) scaleY(var(--inv)) rotate(calc(var(--tilt) * -1)) translate(-50%, -50%); }
-  to   { transform: rotate(-360deg) scaleY(var(--inv)) rotate(calc(var(--tilt) * -1)) translate(-50%, -50%); }
-}
+/* Lua ou satélite: posição e giro calculados em decor.js */
+.orbit-sat { position: absolute; left: 0; top: 0; line-height: 0; display: block; will-change: transform; }
+.orbit-sat img { display: block; max-width: none; }
 .quantum { position: absolute; z-index: 0; line-height: 0; pointer-events: none; }
 .quantum img { display: block; max-width: none; }
 .traffic { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -369,8 +361,10 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 
 /* ============ Rodapé (grama e terra) ============ */
 .footer {
-  position: relative; margin-top: 0; padding: 5.2rem 0 1.8rem; text-align: center;
-  background-color: #79553a; background-image: url("../assets/games/mc-dirt.png"); background-size: 64px 64px; image-rendering: pixelated;
+  position: relative; margin-top: 0; padding: 5.2rem 0 9rem; text-align: center;
+  /* 3 blocos de terra e pedra embaixo (texturas oficiais do Minecraft) */
+  background-color: #7d7d7d; background-image: url("../assets/games/mc-dirt-3.png"), url("../assets/games/mc-stone.png");
+  background-size: 64px 192px, 64px 64px; background-repeat: repeat-x, repeat; background-position: 0 64px, 0 0; image-rendering: pixelated;
 }
 .footer::before {
   content: ""; position: absolute; left: 0; right: 0; top: 0; height: 64px;
@@ -396,13 +390,6 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 .pvz-head { position: absolute; left: 0; bottom: 0; will-change: transform; }
 @keyframes pvz-fall { to { transform: rotate(80deg) translateY(12px); opacity: 0; } }
 
-/* ============ Sóis que caem (clique e o sol some) ============ */
-.sun-drop {
-  position: fixed; top: -70px; z-index: 60; border: 0; padding: 0; background: transparent; cursor: pointer;
-  animation: fall 11s linear forwards;
-}
-.sun-drop:hover { filter: brightness(1.15); }
-.sun-drop.is-popped { animation-play-state: paused; opacity: 0; transition: opacity .2s; }
 /* ============ Animações ============ */
 @keyframes bob { 50% { transform: translateY(-6px); } }
 @keyframes blink { 50% { opacity: 0; } }
@@ -430,7 +417,6 @@ h1, h2, h3, p, dl, dd { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .traffic { display: none; }
   .lawn { display: none; }
-  .orbit__spin, .orbit__sat { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .sky__cloud { left: auto; }
