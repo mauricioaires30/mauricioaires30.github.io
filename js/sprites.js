@@ -67,17 +67,34 @@ const SPRITES = {
       ".X....X."
     ]
   },
+  /* cruz vermelha (R1 Academy): cor única, sem brilho */
   cross: {
-    pal: { R: "#e53935", h: "#ff8a80" },
+    pal: { R: "#e53935" },
     outline: "#4a0f0d",
     rows: [
-      "..RhR..",
-      "..RRR..",
-      "RRRRRRR",
-      "RhRRRRR",
-      "RRRRRRR",
-      "..RRR..",
-      "..RRR.."
+      "...RRR...",
+      "...RRR...",
+      "...RRR...",
+      "RRRRRRRRR",
+      "RRRRRRRRR",
+      "RRRRRRRRR",
+      "...RRR...",
+      "...RRR...",
+      "...RRR..."
+    ]
+  },
+  /* estrela do ícone do HelperValley */
+  hvstar: {
+    pal: { o: "#72240c", Y: "#ffff18", y: "#efc90b" },
+    rows: [
+      "....oo..",
+      "...oYo..",
+      "oooyYooo",
+      "oYYYYYYo",
+      ".oyYYyo.",
+      ".oYyyYo.",
+      "oYyooyYo",
+      "ooo..ooo"
     ]
   },
   containers: {
