@@ -241,6 +241,7 @@ const GAME_ART = {
   ow_cannon    : art("ow-probe-cannon.png", 100, 77),
   ow_eye_symbol: art("ow-eye-symbol.png", 360, 360),
   ow_ship:       art("ow-ship.png", 27, 26, true),
+  sv_abigail:    art("sv-abigail.png", 14, 27, true),
   ow_ventures:   art("ow-ventures.png", 160, 125)
 };
 
