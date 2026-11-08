@@ -37,7 +37,7 @@ const SITE = {
   projects: [
     { icon: "note",      stack: ["Kotlin", "Jetpack Compose"], repo: "https://github.com/mauricioaires30/TruePlayer", demo: "" },
     { icon: "cross",     stack: ["SaaS", "Web"],               repo: "", demo: "https://www.r1academy.app/landingpage" },
-    { icon: "containers", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "" },
+    { icon: "containers", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "https://eforense.com.br/paralegram/" },
     { icon: "victoria",  stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" },
     { icon: "hvstar",    stack: ["TypeScript", "React", "Vite"], repo: "https://github.com/mauricioaires30/HelperValley", demo: "https://mauricioaires30.github.io/HelperValley/" }
   ]
