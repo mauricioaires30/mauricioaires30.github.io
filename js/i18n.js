@@ -39,7 +39,7 @@ const SITE = {
     { icon: "cross",     stack: ["SaaS", "Web"],               repo: "", demo: "https://www.r1academy.app/landingpage" },
     { icon: "containers", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "https://eforense.com.br/paralegram/" },
     { icon: "victoria",  stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" },
-    { icon: "d20",       stack: ["TypeScript", "Svelte", "Cloudflare Workers"], repo: "https://github.com/mauricioaires30/Free-TableTop", demo: "https://mauricioaires30.github.io/Free-TableTop/" },
+    { icon: "d6",        stack: ["TypeScript", "Svelte", "Cloudflare Workers"], repo: "https://github.com/mauricioaires30/Free-TableTop", demo: "https://mauricioaires30.github.io/Free-TableTop/" },
     { icon: "hvstar",    stack: ["TypeScript", "React", "Vite"], repo: "https://github.com/mauricioaires30/HelperValley", demo: "https://mauricioaires30.github.io/HelperValley/" }
   ]
 };
