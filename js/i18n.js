@@ -39,6 +39,7 @@ const SITE = {
     { icon: "cross",     stack: ["SaaS", "Web"],               repo: "", demo: "https://www.r1academy.app/landingpage" },
     { icon: "containers", stack: ["GameMaker", "GML", "Python"], repo: "https://github.com/flavioramon/Paralegram", demo: "https://eforense.com.br/paralegram/" },
     { icon: "victoria",  stack: ["Godot", "Pixel art"],        repo: "", demo: "https://labspider-ufpa.itch.io/tekoha" },
+    { icon: "d20",       stack: ["TypeScript", "Svelte", "Cloudflare Workers"], repo: "https://github.com/mauricioaires30/Free-TableTop", demo: "https://mauricioaires30.github.io/Free-TableTop/" },
     { icon: "hvstar",    stack: ["TypeScript", "React", "Vite"], repo: "https://github.com/mauricioaires30/HelperValley", demo: "https://mauricioaires30.github.io/HelperValley/" }
   ]
 };
@@ -91,6 +92,7 @@ const I18N = {
         { title: "R1 Academy", role: "Criação da plataforma", desc: "SaaS de preparação para residência médica. Gestores organizam mentores, e os mentores montam rotinas de estudo, aulas e questões para os alunos. A plataforma também tem agendamento de reuniões, feedback de provas e acompanhamento do desempenho, como o percentual de acertos." },
         { title: "Paralegram", role: "Programação e arte", desc: "Jogo sério em pixel art, feito em GameMaker, que ensina pensamento computacional paralelo por meio de programação em blocos. Foi avaliado com estudantes de Ciência da Computação." },
         { title: "Tekohá", role: "Pixel art, game design e level design · Laboratório SPIDER – UFPA", desc: "Jogo de ação e aventura 2D em pixel art, feito em Godot, com combate, exploração e habilidades inspiradas no folclore amazônico, como a Iara e o Curupira, e na cultura paraense. Disponível para Windows e Linux." },
+        { title: "Free TableTop", role: "Desenvolvimento completo (projeto solo)", desc: "Mesa virtual de RPG gratuita que roda no navegador, sem conta. A campanha fica salva numa pasta no PC do mestre, e cada mesa privada tem link de convite. Tem mapa com grid, névoa de guerra e tokens, fichas para qualquer sistema, dados, chat, combate com iniciativa e permissões em tudo." },
         { title: "HelperValley", role: "Desenvolvimento completo (projeto solo)", desc: "Companheiro para Stardew Valley que lê os saves do jogo direto no navegador, sem conta e sem enviar nada. Atualiza sozinho quando o jogo salva e mostra sorte e clima do dia, aniversários e festivais, corações e presentes, o Centro Comunitário, o museu e as conquistas, com suporte a multiplayer." }
       ]
     },
@@ -152,6 +154,7 @@ const I18N = {
         { title: "R1 Academy", role: "Platform creator", desc: "SaaS for medical residency exam preparation. Managers organize mentors, and mentors build study routines, lessons and question sets for students. The platform also offers meeting scheduling, exam feedback and performance tracking, such as accuracy rates." },
         { title: "Paralegram", role: "Programming & art", desc: "Pixel-art serious game built in GameMaker that teaches parallel computational thinking through block-based programming. It was evaluated with Computer Science students." },
         { title: "Tekohá", role: "Pixel art, game design and level design · SPIDER Lab – UFPA", desc: "2D pixel-art action-adventure game built in Godot, with combat, exploration and abilities inspired by Amazonian folklore, such as the Iara and the Curupira, and by the culture of Pará, Brazil. Available for Windows and Linux." },
+        { title: "Free TableTop", role: "Full development (solo project)", desc: "Free virtual tabletop for RPGs that runs in the browser, with no account. The campaign is saved in a folder on the game master's PC, and each private table has an invite link. It has a grid map, fog of war and tokens, sheets for any system, dice, chat, initiative-based combat and permissions on everything." },
         { title: "HelperValley", role: "Full development (solo project)", desc: "Stardew Valley companion that reads your save files right in the browser, with no account and no uploads. It updates by itself when the game saves and shows the day's luck and weather, birthdays and festivals, hearts and gifts, the Community Center, the museum and achievements, with multiplayer support." }
       ]
     },

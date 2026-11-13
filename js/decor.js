@@ -53,7 +53,8 @@ var Decor = (function () {
     { el: '#projects-list .project:nth-child(2)', a: 'dr_lancer',   h: 74,  spots: ['tr', 'r'] },
     { el: '#projects-list .project:nth-child(3)', a: 'dr_spamton',  h: 88,  spots: ['l', 'tl'] },
     { el: '#projects-list .project:nth-child(4)', a: 'dr_aqua',     h: 96,  spots: ['r', 'br', 'tr'], m: true },
-    { el: '#projects-list .project:nth-child(5)', a: 'sv_junimo',   h: 64,  spots: ['tr', 'r'], m: true },
+    { el: '#projects-list .project:nth-child(5)', a: 'tr_wizard',   h: 92,  spots: ['tr', 'r'] },
+    { el: '#projects-list .project:nth-child(6)', a: 'sv_junimo',   h: 64,  spots: ['tr', 'r'], m: true },
     { el: '.pix',                                 a: 'pvz_wallnut', h: 76,  spots: ['l', 'bl'] },
     { el: '#contact-links',                       a: 'mc_diamond',  h: 38,  spots: ['tr', 'r'] },
     { el: '.pix',                                 a: 'mc_cake',     h: 48,  spots: ['br', 'tr'] }

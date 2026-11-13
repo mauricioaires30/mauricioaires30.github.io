@@ -83,6 +83,24 @@ const SPRITES = {
       "...RRR..."
     ]
   },
+  /* dado de 20 lados (Free TableTop) */
+  d20: {
+    pal: { B: "#4f7de0", b: "#2f56b0", l: "#8fb3ff", W: "#ffffff" },
+    outline: "#14204a",
+    rows: [
+      ".....B.....",
+      "...BBlBB...",
+      ".BBllllbBB.",
+      "BlllllllbbB",
+      "BllWWlWWlbB",
+      "BlllWlWlWbB",
+      "BllWWlWWlbB",
+      "BlbbbbbbbbB",
+      ".BBbbbbbBB.",
+      "...BBbBB...",
+      ".....B....."
+    ]
+  },
   /* estrela do ícone do HelperValley */
   hvstar: {
     pal: { o: "#72240c", Y: "#ffff18", y: "#efc90b" },
